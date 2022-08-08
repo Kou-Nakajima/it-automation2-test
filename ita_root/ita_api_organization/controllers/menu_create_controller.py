@@ -13,9 +13,12 @@
 #   limitations under the License.
 
 import connexion
-import six
+from common_libs.common import *  # noqa: F403
+from libs import menu_create as menu_create_lib
+from common_libs.api import api_filter
 
 
+@api_filter
 def define_and_execute_menu_create(organization_id, workspace_id, body=None):  # noqa: E501
     """define_and_execute_menu_create
 
@@ -30,11 +33,19 @@ def define_and_execute_menu_create(organization_id, workspace_id, body=None):  #
 
     :rtype: InlineResponse20011
     """
+    # DB接続
+    objdbca = DBConnectWs(workspace_id)  # noqa: F405
+    
+    create_param = {}
     if connexion.request.is_json:
-        body = Object.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        body = dict(connexion.request.get_json())
+        create_param = body
+    
+    result_data = menu_create_lib.menu_create_define(objdbca, create_param)
+    return result_data,
 
 
+@api_filter
 def execute_menu_create(organization_id, workspace_id, body=None):  # noqa: E501
     """execute_menu_create
 
@@ -49,11 +60,19 @@ def execute_menu_create(organization_id, workspace_id, body=None):  # noqa: E501
 
     :rtype: InlineResponse20011
     """
+    # DB接続
+    objdbca = DBConnectWs(workspace_id)  # noqa: F405
+    
+    exec_target = {"create_new": {}, "initialize": {}, "edit": {}}
     if connexion.request.is_json:
-        body = Object.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        body = dict(connexion.request.get_json())
+        exec_target = body
+    
+    result_data = menu_create_lib.menu_create_execute(objdbca, exec_target)
+    return result_data,
 
 
+@api_filter
 def get_exist_menu_create_data(organization_id, workspace_id, menu_create):  # noqa: E501
     """get_exist_menu_create_data
 
@@ -68,9 +87,16 @@ def get_exist_menu_create_data(organization_id, workspace_id, menu_create):  # n
 
     :rtype: InlineResponse20011
     """
-    return 'do some magic!'
+    # DB接続
+    objdbca = DBConnectWs(workspace_id)  # noqa: F405
+    
+    # メニュー定義・作成(既存)用の情報取得
+    data = menu_create_lib.collect_exist_menu_create_data(objdbca, menu_create)
+    
+    return data,
 
 
+@api_filter
 def get_menu_create_data(organization_id, workspace_id):  # noqa: E501
     """get_menu_create_data
 
@@ -83,9 +109,16 @@ def get_menu_create_data(organization_id, workspace_id):  # noqa: E501
 
     :rtype: InlineResponse20011
     """
-    return 'do some magic!'
+    # DB接続
+    objdbca = DBConnectWs(workspace_id)  # noqa: F405
+    
+    # メニュー定義・作成(新規)用の情報取得
+    data = menu_create_lib.collect_menu_create_data(objdbca)
+    
+    return data,
 
 
+@api_filter
 def get_pulldown_initial(organization_id, workspace_id, menu, column):  # noqa: E501
     """get_pulldown_initial
 
@@ -105,6 +138,7 @@ def get_pulldown_initial(organization_id, workspace_id, menu, column):  # noqa: 
     return 'do some magic!'
 
 
+@api_filter
 def get_reference_item(organization_id, workspace_id, menu, column):  # noqa: E501
     """get_reference_item
 

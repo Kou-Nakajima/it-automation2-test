@@ -97,7 +97,7 @@ def conductor_maintenance(objdbca, menu, conductor_data, target_uuid=''):
         parameter.setdefault('type', 'Update')
 
     status_code, result, msg = objmenu.rest_maintenance(parameter, target_uuid)
-    print( status_code, result, msg )
+
     if status_code != '000-00000':
         if status_code is None:
             status_code = '999-99999'
@@ -164,9 +164,9 @@ def get_conductor_data(objdbca, menu, conductor_class_id):
         tmp_last_update_date_time = tmp_data.get('last_update_date_time')
 
         result = tmp_data.get('setting')
-        result['conductor_class_id'] = tmp_conductor_class_id
-        result['remarks'] = tmp_remarks
-        result['last_update_date_time'] = tmp_last_update_date_time
+        result['conductor']['id'] = tmp_conductor_class_id
+        result['conductor']['note'] = tmp_remarks
+        result['conductor']['last_update_date_time'] = tmp_last_update_date_time
     else:
         result = {}
 

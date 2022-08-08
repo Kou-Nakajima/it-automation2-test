@@ -213,22 +213,22 @@ services:
   #     - SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
   #     - SSL_CERT_DIR=/etc/ssl/certs
   #     - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
-  # ita-by-create-menu:
+  # ita-by-menu-create:
   #   build:
   #     target: develop_build
   #   user: 1000:1000
   #   volumes:
   #     - ..:/workspace:cached
-  #     - ../ita_root/common_libs:/workspace/ita_root/ita_by_create_menu/common_libs:cached
-  #     - ../ita_root/messages:/workspace/ita_root/ita_by_create_menu/messages:cached
-  #     - ../ita_root/backyard:/workspace/ita_root/ita_by_create_menu/backyard:cached
-  #     - ../ita_root/ita_by_create_menu:/exastro:cached
+  #     - ../ita_root/common_libs:/workspace/ita_root/ita_by_menu_create/common_libs:cached
+  #     - ../ita_root/messages:/workspace/ita_root/ita_by_menu_create/messages:cached
+  #     - ../ita_root/backyard:/workspace/ita_root/ita_by_menu_create/backyard:cached
+  #     - ../ita_root/ita_by_menu_create:/exastro:cached
   #     - ../ita_root/common_libs:/exastro/common_libs:cached
   #     - ../ita_root/messages:/exastro/messages:cached
   #     - ../ita_root/backyard:/exastro/backyard:cached
   #     - ~/.netrc:/home/app_user/.netrc
   #     - ~/.gitconfig:/home/app_user/.gitconfig
-  #     - ./ita-by-create-menu/.vscode/launch.json:/workspace/.vscode/launch.json
+  #     - ./ita-by-menu-create/.vscode/launch.json:/workspace/.vscode/launch.json
   #     - /usr/share/pki/ca-trust-source/anchors/UserRootCertificate.crt:/etc/ssl/certs/ca-certificates.crt
   #     - /mnt/mainte/talisman/.talismanrc:/mnt/mainte/talisman/.talismanrc
   #     - ~/.config/git/ignore:/home/app_user/.config/git/ignore

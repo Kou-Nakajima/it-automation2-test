@@ -34,18 +34,21 @@ class SingleTextColumn(TextColumn):
         """
         retBool = True
         preg_match = r"^[^\t\r\n]*$"
-        
-        # 親クラスのvalidation確認。
-        validate_result = super().check_basic_valid(val)
-        if validate_result[0] is not True:
-            return validate_result
-        
-        # 正規表現
-        pattern = re.compile(preg_match)
-        tmp_result = pattern.fullmatch(val)
-        if tmp_result is None:
-            retBool = False
-            msg = "正規表現エラー (閾値:{},値{})[{}]".format(pattern, val, self.rest_key_name)
-            return retBool, msg
-        
+
+        if val is not None:
+            val = str(val)
+
+            # 親クラスのvalidation確認。
+            validate_result = super().check_basic_valid(val)
+            if validate_result[0] is not True:
+                return validate_result
+            
+            # 正規表現
+            pattern = re.compile(preg_match)
+            tmp_result = pattern.fullmatch(val)
+            if tmp_result is None:
+                retBool = False
+                msg = "正規表現エラー (閾値:{},値{})[{}]".format(pattern, val, self.rest_key_name)
+                return retBool, msg
+            
         return retBool,

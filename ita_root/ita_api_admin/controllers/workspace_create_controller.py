@@ -24,7 +24,7 @@ import shutil
 
 from common_libs.api import api_filter, check_request_body_key
 from common_libs.common.dbconnect import *  # noqa: F403
-from common_libs.common.util import ky_encrypt
+from common_libs.common.util import ky_encrypt, get_timestamp
 
 
 @api_filter
@@ -128,29 +128,45 @@ def workspace_create(organization_id, workspace_id, body=None):  # noqa: E501
         g.db_connect_info["WSDB_PASSWORD"] = data["DB_PASSWORD"]
         g.db_connect_info["WSDB_DATADBASE"] = data["DB_DATADBASE"]
         ws_db = DBConnectWs(workspace_id, organization_id)  # noqa: F405
-        # create table of workspace-db
-        ws_db.sqlfile_execute("sql/workspace.sql")
-        g.applogger.debug("executed sql/workspace.sql")
 
-        # insert initial data of workspace-db
-        ws_db.db_transaction_start()
-        with open("sql/workspace_master.sql", "r") as f:
-            sql_list = f.read().split(";\n")
-            for sql in sql_list:
-                if re.fullmatch(r'[\s\n\r]*', sql):
-                    continue
+        sql_list = [
+            ['workspace.sql', 'workspace_master.sql'],
+            ['menu_create.sql', 'menu_create_master.sql'],
+            ['conductor.sql', 'conductor_master.sql'],
+            ['ansible.sql', 'ansible_master.sql'],
+        ]
+        last_update_timestamp = str(get_timestamp())
 
-                prepared_list = []
-                trg_count = sql.count('__ROLE_ID__')
-                if trg_count > 0:
-                    prepared_list = list(map(lambda a: role_id, range(trg_count)))
-                    sql = ws_db.prepared_val_escape(sql).replace('\'__ROLE_ID__\'', '%s')
-                    # print(sql)
-                    # print(prepared_list)
+        for sql_files in sql_list:
 
-                ws_db.sql_execute(sql, prepared_list)
-        g.applogger.debug("executed sql/workspace_master.sql")
-        ws_db.db_commit()
+            ddl_file = "sql/" + sql_files[0]
+            dml_file = "sql/" + sql_files[1]
+
+            # create table of workspace-db
+            ws_db.sqlfile_execute(ddl_file)
+            g.applogger.debug("executed " + ddl_file)
+
+            # insert initial data of workspace-db
+            ws_db.db_transaction_start()
+            with open(dml_file, "r") as f:
+                sql_list = f.read().split(";\n")
+                for sql in sql_list:
+                    if re.fullmatch(r'[\s\n\r]*', sql):
+                        continue
+
+                    sql = sql.replace("_____DATE_____", "STR_TO_DATE('" + last_update_timestamp + "','%Y-%m-%d %H:%i:%s.%f')")
+
+                    prepared_list = []
+                    trg_count = sql.count('__ROLE_ID__')
+                    if trg_count > 0:
+                        prepared_list = list(map(lambda a: role_id, range(trg_count)))
+                        sql = ws_db.prepared_val_escape(sql).replace('\'__ROLE_ID__\'', '%s')
+                        # print(sql)
+                        # print(prepared_list)
+
+                    ws_db.sql_execute(sql, prepared_list)
+            g.applogger.debug("executed " + dml_file)
+            ws_db.db_commit()
 
         # register workspace-db connect infomation
         org_db.db_transaction_start()

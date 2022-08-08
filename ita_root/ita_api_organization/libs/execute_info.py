@@ -34,12 +34,10 @@ def call_check_auth_menu(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00001", log_msg_args, api_msg_args)  # noqa: F405
-    
-    menu_id = ret[0].get('MENU_ID')  # 対象メニューを特定するためのID
+        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
 
     # メニューに対するロール権限をチェック（Falseなら権限エラー）
-    role_check = check_auth_menu(menu_id)
+    role_check = check_auth_menu(menu)
     if not role_check:
         log_msg_args = [menu]
         api_msg_args = [menu]
@@ -87,7 +85,7 @@ def collect_menu_info(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00001", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_id = ret[0].get('MENU_ID')  # 対象メニューを特定するためのID
     menu_group_id = ret[0].get('MENU_GROUP_ID')  # 対象メニューグループを特定するためのID
@@ -108,7 +106,7 @@ def collect_menu_info(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00003", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_info = ret[0].get('MENU_INFO_' + lang.upper())
     sheet_type = ret[0].get('SHEET_TYPE')
@@ -127,7 +125,7 @@ def collect_menu_info(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00003", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00004", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_group_name = ret[0].get('MENU_GROUP_NAME_' + lang.upper())
     parent_menu_group_id = ret[0].get('PARENT_MENU_GROUP_ID')
@@ -188,7 +186,7 @@ def collect_menu_info(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00004", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00005", log_msg_args, api_msg_args)  # noqa: F405
     
     column_info_data = {}
     tmp_column_group = {}
@@ -358,7 +356,7 @@ def collect_menu_column_list(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00001", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_id = ret[0].get('MENU_ID')  # 対象メニューを特定するためのID
         
@@ -367,7 +365,7 @@ def collect_menu_column_list(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00004", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00005", log_msg_args, api_msg_args)  # noqa: F405
     
     column_list = []
     for recode in ret:
@@ -402,7 +400,7 @@ def collect_pulldown_list(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00001", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_id = ret[0].get('MENU_ID')  # 対象メニューを特定するためのID
         
@@ -461,7 +459,7 @@ def collect_search_candidates(objdbca, menu, column):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00001", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_id = ret[0].get('MENU_ID')  # 対象メニューを特定するためのID
     
@@ -470,7 +468,7 @@ def collect_search_candidates(objdbca, menu, column):
     if not ret:
         log_msg_args = [menu, column]
         api_msg_args = [menu, column]
-        raise AppException("200-00005", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00006", log_msg_args, api_msg_args)  # noqa: F405
     
     col_name = str(ret[0].get('COL_NAME'))
     column_class_id = str(ret[0].get('COLUMN_CLASS'))
@@ -487,7 +485,7 @@ def collect_search_candidates(objdbca, menu, column):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00003", log_msg_args, api_msg_args)  # noqa: F405
     
     table_name = ret[0].get('TABLE_NAME')
     
@@ -496,7 +494,7 @@ def collect_search_candidates(objdbca, menu, column):
     if col_name not in ret[0]:
         log_msg_args = [menu, col_name]
         api_msg_args = [menu, col_name]
-        raise AppException("200-00006", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("200-00007", log_msg_args, api_msg_args)  # noqa: F405
     
     # 対象のテーブルからレコードを取得し、対象のカラムの値を一覧化
     ret = objdbca.table_select(table_name, 'WHERE DISUSE_FLAG = %s', [0])

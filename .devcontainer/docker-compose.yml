@@ -160,9 +160,9 @@ services:
   #     - GITLAB_HOST=10.197.18.183
   #     - GITLAB_PORT=40080
   #     - GITLAB_ROOT_TOKEN=mzsQj8VU_zcSoSZsSX__
-  # ita-by-create-menu:
+  # ita-by-menu-create:
   #   build:
-  #     dockerfile: ./ita_root/ita_by_create_menu/Dockerfile
+  #     dockerfile: ./ita_root/ita_by_menu_create/Dockerfile
   #     context: ../.
   #     args:
   #       - HTTP_PROXY=${HTTP_PROXY}

@@ -80,6 +80,7 @@ class TextColumn(Column):
         preg_match = None
 
         if val is not None:
+            val = str(val)
             # カラムの閾値を取得
             objcols = self.get_objcols()
             if objcols is not None:

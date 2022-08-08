@@ -1,6 +1,8 @@
 import pprint
 import json
+from common_libs.conductor.classes.util import ConductorCommonLibs
 
+from flask import g
 
 def external_valid_before(objdbca, objtable, option):
     # print('xxxxx-1001')
@@ -24,7 +26,20 @@ def external_valid_menu_before(objdbca, objtable, option):
     retBool = True
     msg = ''
     option = convert_conductor_ver_1(option)
-    print(option)
+    # pprint.pprint(option)
+
+    target_rest_name = 'setting'
+    entry_parameter = option.get('entry_parameter')
+    tmp_parameter = entry_parameter.get('parameter')
+    conductor_data = json.loads(tmp_parameter.get(target_rest_name))
+    CCL = ConductorCommonLibs()
+    result = CCL.chk_format(conductor_data)
+    if result[0] is False:
+        status_code = '200-00201'
+        msg_args = ["{}".format(result)]
+        msg = g.appmsg.get_api_message(status_code, msg_args)
+        retBool = result[0]
+
     return retBool, msg, option,
 
 def external_valid_menu_after(objdbca, objtable, option):
@@ -48,13 +63,15 @@ def convert_conductor_ver_1(option):
         tmp_setting = tmp_setting.replace("PATTERN_ID", "movement_id")
         tmp_setting = tmp_setting.replace("OPERATION_NO_IDBH", "operation_id")
         tmp_setting = tmp_setting.replace("ORCHESTRATOR_ID", "orchestra_id")
-        
+        tmp_setting = tmp_setting.replace("CONDUCTOR_NAME", "Name")
+        tmp_setting = tmp_setting.replace("OPERATION_NAME", "operation_name")
+        tmp_setting = tmp_setting.replace("END_TYPE", "end_type")
         json_setting = json.loads(tmp_setting)
-        if 'ACCESS_AUTH' in  json_setting['conductor']:
+        if 'ACCESS_AUTH' in json_setting['conductor']:
             del json_setting['conductor']['ACCESS_AUTH']
-        if 'NOTICE_INFO' in  json_setting['conductor']:
+        if 'NOTICE_INFO' in json_setting['conductor']:
             del json_setting['conductor']['NOTICE_INFO']
         tmp_setting = json.dumps(json_setting)
-        option['entry_parameter']['parameter']['setting'] = tmp_setting
-
+    option['entry_parameter']['parameter']['setting'] = tmp_setting
+    # pprint.pprint(option)
     return option

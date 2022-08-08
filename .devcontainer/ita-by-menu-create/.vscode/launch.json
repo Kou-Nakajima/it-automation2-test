@@ -16,7 +16,7 @@
         "cwd": "/exastro",
         "pathMappings": [
           {
-            "localRoot": "${workspaceFolder}/ita_root/ita_by_create_menu",
+            "localRoot": "${workspaceFolder}/ita_root/ita_by_menu_create",
             "remoteRoot": "/exastro"
           },
         ],
@@ -40,7 +40,7 @@
         "cwd": "/exastro",
         "pathMappings": [
           {
-            "localRoot": "${workspaceFolder}/ita_root/ita_by_create_menu",
+            "localRoot": "${workspaceFolder}/ita_root/ita_by_menu_create",
             "remoteRoot": "/exastro"
           },
         ],

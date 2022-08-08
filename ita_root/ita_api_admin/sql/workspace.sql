@@ -306,8 +306,9 @@ CREATE TABLE T_COMN_COLUMN_GROUP_JNL
 CREATE TABLE T_COMN_VERSION
 (
     SERVICE_ID                      VARCHAR(40),                                -- UUID
-    SERVICE_NAME                    VARCHAR(255),                               -- サービス
     VERSION                         VARCHAR(32),                                -- バージョン
+    INSTALLED_DRIVER_JA             TEXT,                                       -- インストール済ドライバ(ja)
+    INSTALLED_DRIVER_EN             TEXT,                                       -- インストール済ドライバ(en)
     NOTE                            TEXT,                                       -- 備考
     DISUSE_FLAG                     VARCHAR(1),                                 -- 廃止フラグ
     LAST_UPDATE_TIMESTAMP           DATETIME(6),                                -- 最終更新日時
@@ -315,20 +316,6 @@ CREATE TABLE T_COMN_VERSION
     PRIMARY KEY(SERVICE_ID)
 )ENGINE = InnoDB, CHARSET = utf8mb4, COLLATE = utf8mb4_bin, ROW_FORMAT=COMPRESSED ,KEY_BLOCK_SIZE=8;
 
-CREATE TABLE T_COMN_VERSION_JNL
-(
-    JOURNAL_SEQ_NO                  VARCHAR(40),                                -- 履歴用シーケンス
-    JOURNAL_REG_DATETIME            DATETIME(6),                                -- 履歴用変更日時
-    JOURNAL_ACTION_CLASS            VARCHAR (8),                                -- 履歴用変更種別
-    SERVICE_ID                      VARCHAR(40),                                -- UUID
-    SERVICE_NAME                    VARCHAR(255),                               -- サービス
-    VERSION                         VARCHAR(32),                                -- バージョン
-    NOTE                            TEXT,                                       -- 備考
-    DISUSE_FLAG                     VARCHAR(1),                                 -- 廃止フラグ
-    LAST_UPDATE_TIMESTAMP           DATETIME(6),                                -- 最終更新日時
-    LAST_UPDATE_USER                VARCHAR(40),                                -- 最終更新者
-    PRIMARY KEY(JOURNAL_SEQ_NO)
-)ENGINE = InnoDB, CHARSET = utf8mb4, COLLATE = utf8mb4_bin, ROW_FORMAT=COMPRESSED ,KEY_BLOCK_SIZE=8;
 
 
 

@@ -16,4 +16,4 @@ from common_libs.common.exception import AppException
 
 
 def backyard_main(organization_id, workspace_id):
-    print("backyard_main ita_by_create_menu called")
+    print("backyard_main ita_by_menu_create called")
