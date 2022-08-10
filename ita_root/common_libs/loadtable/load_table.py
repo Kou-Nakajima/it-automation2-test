@@ -1951,6 +1951,16 @@ class loadTable():
                     if input_item != '1':
                         if tmp_col_name not in column_list:
                             del parameter[tmp_keys]
+
+                    # 最終更新者を除外
+                    if tmp_col_name == 'LAST_UPDATE_USER':
+                        del parameter[tmp_keys]
+
+                    # 登録時最終更新日時を除外
+                    if cmd_type == CMD_REGISTER:
+                        if tmp_col_name == 'LAST_UPDATE_TIMESTAMP':
+                            del parameter[tmp_keys]
+
                     if cmd_type == CMD_DISCARD:
                         if tmp_col_name not in primary_key_list:
                             # 廃止時に備考の更新は例外で可

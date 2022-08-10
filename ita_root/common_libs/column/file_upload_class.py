@@ -158,59 +158,61 @@ class FileUploadColumn(Column):
         if cmd_type == "Discard":
             return retBool
         
-        # base64からデコードしてstrに変換
-        decode_option = base64.b64decode(option["file_data"].encode()).decode()
-        uuid = option["uuid"]
-        uuid_jnl = option["uuid_jnl"]
-        workspace_id = g.get("WORKSPACE_ID")
-        menu_id = self.get_menu()
-        rest_name = self.get_rest_key_name()
+        if val is not None:
+            if len(val) != 0:
+                decode_option = option.get("file_data")
 
-        # ファイルパス取得
-        ret = self.get_file_upload_place()
-        if not ret:
-            path = get_upload_file_path(workspace_id, menu_id, uuid, rest_name, val, uuid_jnl)   # noqa:F405
-        else:
-            path = get_upload_file_path_specify(workspace_id, ret, uuid, val, uuid_jnl)   # noqa:F405
+                uuid = option["uuid"]
+                uuid_jnl = option["uuid_jnl"]
+                workspace_id = g.get("WORKSPACE_ID")
+                menu_id = self.get_menu()
+                rest_name = self.get_rest_key_name()
 
-        dir_path = path["file_path"]
-        old_dir_path = path["old_file_path"]
+                # ファイルパス取得
+                ret = self.get_file_upload_place()
+                if not ret:
+                    path = get_upload_file_path(workspace_id, menu_id, uuid, rest_name, val, uuid_jnl)   # noqa:F405
+                else:
+                    path = get_upload_file_path_specify(workspace_id, ret, uuid, val, uuid_jnl)   # noqa:F405
+
+                dir_path = path["file_path"]
+                old_dir_path = path["old_file_path"]
+                        
+                # old配下にファイルアップロード
+                if len(old_dir_path) > 0:
+                    upload_file(old_dir_path, decode_option)  # noqa: F405
+                else:
+                    retBool = False
+                    msg = "ファイルパスの取得エラー"
+                    return retBool, msg
                 
-        # old配下にファイルアップロード
-        if len(old_dir_path) > 0:
-            upload_file(old_dir_path, decode_option)  # noqa: F405
-        else:
-            retBool = False
-            msg = "ファイルパスの取得エラー"
-            return retBool, msg
-        
-        # 更新、復活の場合シンボリックリンクを削除
-        if cmd_type == "Update" or cmd_type == "Restore":
-            # 更新前のファイルパス取得
-            filepath = os.path.dirname(dir_path)
-            # 更新前のファイル名取得
-            filelist = []
-            for f in os.listdir(filepath):
-                if os.path.isfile(os.path.join(filepath, f)):
-                    filelist.append(f)
-            if len(filelist) != 0:
-                old_file_path = filepath + "/" + filelist[0]
-                
+                # 更新、復活の場合シンボリックリンクを削除
+                if cmd_type == "Update" or cmd_type == "Restore":
+                    # 更新前のファイルパス取得
+                    filepath = os.path.dirname(dir_path)
+                    # 更新前のファイル名取得
+                    filelist = []
+                    for f in os.listdir(filepath):
+                        if os.path.isfile(os.path.join(filepath, f)):
+                            filelist.append(f)
+                    if len(filelist) != 0:
+                        old_file_path = filepath + "/" + filelist[0]
+                        
+                        try:
+                            os.unlink(old_file_path)
+                        except Exception:
+                            retBool = False
+                            msg = "シンボリックリンク削除エラー old_file_path:{}".format(old_file_path)
+                            return retBool, msg
+
+                # シンボリックリンク作成
                 try:
-                    os.unlink(old_file_path)
+                    os.symlink(old_dir_path, dir_path)
                 except Exception:
                     retBool = False
-                    msg = "シンボリックリンク削除エラー old_file_path:{}".format(old_file_path)
+                    msg = "シンボリックリンク作成エラー old_dir_path:{}, dir_path:{}".format(old_dir_path, dir_path)
                     return retBool, msg
-
-        # シンボリックリンク作成
-        try:
-            os.symlink(old_dir_path, dir_path)
-        except Exception:
-            retBool = False
-            msg = "シンボリックリンク作成エラー old_dir_path:{}, dir_path:{}".format(old_dir_path, dir_path)
-            return retBool, msg
-        
+            
         return retBool,
     
     def get_file_data(self, file_name, target_uuid, target_uuid_jnl=''):
@@ -223,19 +225,23 @@ class FileUploadColumn(Column):
             RETRUN:
                 base64 string
         """
+        result = None
 
-        workspace_id = g.get("WORKSPACE_ID")
-        menu_id = self.get_menu()
-        rest_name = self.get_rest_key_name()
+        if file_name is None:
+            if len(file_name) != 0:
+                workspace_id = g.get("WORKSPACE_ID")
+                menu_id = self.get_menu()
+                rest_name = self.get_rest_key_name()
 
-        ret = self.get_file_upload_place()
-        if not ret:
-            path = get_upload_file_path(workspace_id, menu_id, target_uuid, rest_name, file_name, target_uuid_jnl)   # noqa:F405
-        else:
-            path = get_upload_file_path_specify(workspace_id, ret, target_uuid, file_name, target_uuid_jnl)   # noqa:F405
-        dir_path = path["file_path"]
-        # ファイルの中身を読み込んでbase64に変換してreturn　読み込めなかったらFalse
-        result = file_encode(dir_path)  # noqa: F405
+                ret = self.get_file_upload_place()
+                if not ret:
+                    path = get_upload_file_path(workspace_id, menu_id, target_uuid, rest_name, file_name, target_uuid_jnl)   # noqa:F405
+                else:
+                    path = get_upload_file_path_specify(workspace_id, ret, target_uuid, file_name, target_uuid_jnl)   # noqa:F405
+                dir_path = path["file_path"]
+                # ファイルの中身を読み込んでbase64に変換してreturn　読み込めなかったらFalse
+                result = file_encode(dir_path)  # noqa: F405
+
         return result
 
     def after_iud_restore_action(self, val="", option={}):
@@ -253,56 +259,58 @@ class FileUploadColumn(Column):
         # 廃止の場合return
         if cmd_type == "Discard":
             return retBool, msg
-        
-        uuid = option["uuid"]
-        uuid_jnl = option["uuid_jnl"]
-        workspace_id = g.get("WORKSPACE_ID")
-        menu_id = self.get_menu()
-        rest_name = self.get_rest_key_name()
 
-        # 削除対象のold配下のファイルパス取得
-        ret = self.get_file_upload_place()
-        if not ret:
-            path = get_upload_file_path(workspace_id, menu_id, uuid, rest_name, val, uuid_jnl)   # noqa:F405
-        else:
-            path = get_upload_file_path_specify(workspace_id, ret, uuid, val, uuid_jnl)   # noqa:F405
-        dir_path = path["file_path"]
-        old_dir_path = path["old_file_path"]
+        if val is not None:
+            if len(val) != 0:
+                uuid = option["uuid"]
+                uuid_jnl = option["uuid_jnl"]
+                workspace_id = g.get("WORKSPACE_ID")
+                menu_id = self.get_menu()
+                rest_name = self.get_rest_key_name()
 
-        # ファイルの削除
-        if cmd_type != "Discard":
-            try:
-                # シンボリックリンク,oldのファイル,ディレクトリの削除
-                os.unlink(dir_path)
-                os.remove(old_dir_path)
-                os.rmdir(old_dir_path.replace(val, ''))
-                # 登録時は、対象のIDのディレクトリ削除
-                if cmd_type == "Register":
-                    os.rmdir(dir_path.replace(val, ''))
-            except Exception:
-                retBool = False
-                msg = "削除エラー old_dir_path:{}".format(old_dir_path)
-                print(msg)
-                # return retBool, msg
-            try:
-                # ファイルの更新があった最終更新時点のファイルでシンボリックリンク生成
-                for jnlid in option.get('target_jnls'):
-                    # JNLのoldのファイルパス取得
-                    jnl_id = jnlid.get('JOURNAL_SEQ_NO')
-                    jnl_val = jnlid.get(self.get_col_name())
-                    ret = self.get_file_upload_place()
-                    if not ret:
-                        tmp_recovery_path = get_upload_file_path(workspace_id, menu_id, uuid, rest_name, jnl_val, jnl_id)   # noqa:F405
-                    else:
-                        tmp_recovery_path = get_upload_file_path_specify(workspace_id, ret, uuid, jnl_val, jnl_id)   # noqa:F405
-                    retmp_recovery_pathc = tmp_recovery_path.get('old_file_path')
-                    if retmp_recovery_pathc is not None:
-                        if os.path.isfile(retmp_recovery_pathc) is True:
-                            os.symlink(retmp_recovery_pathc, dir_path)
-                            break
-            except Exception:
-                retBool = False
-                msg = "シンボリックリンク再生成エラー old_dir_path:{}".format(old_dir_path)
-                print(msg)
-                # return retBool, msg
+                # 削除対象のold配下のファイルパス取得
+                ret = self.get_file_upload_place()
+                if not ret:
+                    path = get_upload_file_path(workspace_id, menu_id, uuid, rest_name, val, uuid_jnl)   # noqa:F405
+                else:
+                    path = get_upload_file_path_specify(workspace_id, ret, uuid, val, uuid_jnl)   # noqa:F405
+                dir_path = path["file_path"]
+                old_dir_path = path["old_file_path"]
+
+                # ファイルの削除
+                if cmd_type != "Discard":
+                    try:
+                        # シンボリックリンク,oldのファイル,ディレクトリの削除
+                        os.unlink(dir_path)
+                        os.remove(old_dir_path)
+                        os.rmdir(old_dir_path.replace(val, ''))
+                        # 登録時は、対象のIDのディレクトリ削除
+                        if cmd_type == "Register":
+                            os.rmdir(dir_path.replace(val, ''))
+                    except Exception:
+                        retBool = False
+                        msg = "削除エラー old_dir_path:{}".format(old_dir_path)
+                        print(msg)
+                        # return retBool, msg
+                    try:
+                        # ファイルの更新があった最終更新時点のファイルでシンボリックリンク生成
+                        for jnlid in option.get('target_jnls'):
+                            # JNLのoldのファイルパス取得
+                            jnl_id = jnlid.get('JOURNAL_SEQ_NO')
+                            jnl_val = jnlid.get(self.get_col_name())
+                            ret = self.get_file_upload_place()
+                            if not ret:
+                                tmp_recovery_path = get_upload_file_path(workspace_id, menu_id, uuid, rest_name, jnl_val, jnl_id)   # noqa:F405
+                            else:
+                                tmp_recovery_path = get_upload_file_path_specify(workspace_id, ret, uuid, jnl_val, jnl_id)   # noqa:F405
+                            retmp_recovery_pathc = tmp_recovery_path.get('old_file_path')
+                            if retmp_recovery_pathc is not None:
+                                if os.path.isfile(retmp_recovery_pathc) is True:
+                                    os.symlink(retmp_recovery_pathc, dir_path)
+                                    break
+                    except Exception:
+                        retBool = False
+                        msg = "シンボリックリンク再生成エラー old_dir_path:{}".format(old_dir_path)
+                        print(msg)
+                        # return retBool, msg
         return retBool, msg

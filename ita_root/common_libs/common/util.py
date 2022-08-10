@@ -287,13 +287,16 @@ def upload_file(file_path, text):
 
     if type(text) is bytes:
         text = base64.b64decode(text.encode()).decode()
+    
+    if isinstance(text, str):
+        text = base64.b64decode(text.encode())
 
     if not os.path.isdir(path):
         os.makedirs(path)
 
     try:
-        with open(file_path, "x") as f:
-            f.write(str(text))
+        with open(file_path, "bx") as f:
+            f.write(text)
     except Exception:
         return False
 
@@ -316,9 +319,12 @@ def encrypt_upload_file(file_path, text):
     if not os.path.isdir(path):
         os.makedirs(path)
 
+    if isinstance(text, str):
+        text = base64.b64decode(text.encode())
+
     try:
-        with open(file_path, "x") as f:
-            f.write(str(text))
+        with open(file_path, "bx") as f:
+            f.write(text)
     except Exception:
         return False
 
