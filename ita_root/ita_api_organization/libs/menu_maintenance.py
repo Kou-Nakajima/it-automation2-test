@@ -12,15 +12,15 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import os
-from flask import g
+from flask import g  # noqa: F401
 
 from common_libs.common import *  # noqa: F403
-from common_libs.loadtable import *
+from common_libs.loadtable import *  # noqa: F403
 
-from libs.organization_common import check_menu_info
-from libs.organization_common import check_auth_menu
-from libs.organization_common import check_sheet_type
+from libs.organization_common import check_menu_info  # noqa: F401
+from libs.organization_common import check_auth_menu  # noqa: F401
+from libs.organization_common import check_sheet_type  # noqa: F401
+
 
 def rest_maintenance(objdbca, menu, parameter, target_uuid):
     """
@@ -41,19 +41,19 @@ def rest_maintenance(objdbca, menu, parameter, target_uuid):
         status_code = "401-00001"
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException(status_code, log_msg_args, api_msg_args)
+        raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
     
     # 『メニュー-テーブル紐付管理』の取得とシートタイプのチェック
     sheet_type_list = ['0', '1', '2', '3', '4']
-    menu_table_link_record = check_sheet_type(menu, sheet_type_list, objdbca)
+    menu_table_link_record = check_sheet_type(menu, sheet_type_list, objdbca)  # noqa: F841
 
-    mode = 'nomal'
-    objmenu = load_table.loadTable(objdbca, menu)
+    mode = 'nomal'  # noqa: F841
+    objmenu = load_table.loadTable(objdbca, menu)  # noqa: F405
     if objmenu.get_objtable() is False:
         status_code = "401-00003"
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException(status_code, log_msg_args, api_msg_args)
+        raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
 
     status_code, result, msg = objmenu.rest_maintenance(parameter, target_uuid)
     if status_code != '000-00000':
@@ -61,12 +61,12 @@ def rest_maintenance(objdbca, menu, parameter, target_uuid):
             status_code = '999-99999'
         elif len(status_code) == 0:
             status_code = '999-99999'
-        if isinstance(msg,list):
+        if isinstance(msg, list):
             log_msg_args = msg
             api_msg_args = msg
         else:
             log_msg_args = [msg]
-            api_msg_args = [msg] 
-        raise AppException(status_code, log_msg_args, api_msg_args)
+            api_msg_args = [msg]
+        raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
 
     return result

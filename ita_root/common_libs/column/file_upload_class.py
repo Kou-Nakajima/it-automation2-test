@@ -76,65 +76,71 @@ class FileUploadColumn(Column):
         upload_max_size = None
         # ファイル名正規表現　カンマとダブルクォートとタブとスラッシュと改行以外の文字
         preg_match = r"^[^,\"\t\/\r\n]*$"
-        # デコード値
-        decode_option = base64.b64decode(option["file_data"].encode())
-        # 禁止拡張子
-        forbidden_extension_arry = self.objdbca.table_select("T_COMN_SYSTEM_CONFIG", "WHERE CONFIG_ID = %s", bind_value_list=['FORBIDDEN_UPLOAD'])
         
-        forbidden_extension = forbidden_extension_arry[0]["VALUE"]
-        
-        # カラムの閾値を取得
-        objcols = self.get_objcols()
-        if objcols is not None:
-            if self.get_rest_key_name() in objcols:
-                dict_valid = self.get_dict_valid()
-                # 閾値(文字列長)
-                upload_max_size = dict_valid.get('upload_max_size')
+        if val is not None:
+            if option.get("file_data") is not None:
+                # デコード値
+                decode_option = base64.b64decode(option["file_data"].encode())
+                # 禁止拡張子
+                forbidden_extension_arry = self.objdbca.table_select("T_COMN_SYSTEM_CONFIG", "WHERE CONFIG_ID = %s", bind_value_list=['FORBIDDEN_UPLOAD'])
+                
+                forbidden_extension = forbidden_extension_arry[0]["VALUE"]
+                
+                # カラムの閾値を取得
+                objcols = self.get_objcols()
+                if objcols is not None:
+                    if self.get_rest_key_name() in objcols:
+                        dict_valid = self.get_dict_valid()
+                        # 閾値(文字列長)
+                        upload_max_size = dict_valid.get('upload_max_size')
 
-        # 文字列長
-        if max_length is not None:
-            check_val = len(str(val).encode('utf-8'))
-            if check_val != 0:
-                if int(min_length) < check_val < int(max_length):
-                    retBool = True
+                # 文字列長
+                if max_length is not None:
+                    check_val = len(str(val).encode('utf-8'))
+                    if check_val != 0:
+                        if int(min_length) < check_val < int(max_length):
+                            retBool = True
+                        else:
+                            retBool = False
+                            msg = "文字長エラー (閾値:{}<値<{}, 値{})[{}]".format(min_length, max_length, check_val, self.rest_key_name)
+                            return retBool, msg
+                
+                # ファイル名のチェック
+                if preg_match is not None:
+                    if len(preg_match) != 0:
+                        patarn = re.compile(preg_match, re.DOTALL)
+                        tmp_result = patarn.fullmatch(val)
+                        if tmp_result is None:
+                            retBool = False
+                            msg = "正規表現エラー (閾値:{},値{})[{}]".format(patarn, val, self.rest_key_name)
+                            return retBool, msg
+
+                # バイト数比較
+                if decode_option and upload_max_size is not None:
+                    if len(decode_option) > upload_max_size:
+                        retBool = False
+                        msg = "バイト数超過　(閾値:{},値{})[{}]".format(upload_max_size, len(decode_option), self.rest_key_name)
+                        return retBool, msg
                 else:
                     retBool = False
-                    msg = "文字長エラー (閾値:{}<値<{}, 値{})[{}]".format(min_length, max_length, check_val, self.rest_key_name)
-                    return retBool, msg
-        
-        # ファイル名のチェック
-        if preg_match is not None:
-            if len(preg_match) != 0:
-                patarn = re.compile(preg_match, re.DOTALL)
-                tmp_result = patarn.fullmatch(val)
-                if tmp_result is None:
-                    retBool = False
-                    msg = "正規表現エラー (閾値:{},値{})[{}]".format(patarn, val, self.rest_key_name)
+                    msg = "バイト数無し (閾値:{},値{})[{}]".format(upload_max_size, len(decode_option), self.rest_key_name)
                     return retBool, msg
 
-        # バイト数比較
-        if decode_option and upload_max_size is not None:
-            if len(decode_option) > upload_max_size:
+                # 禁止拡張子チェック
+                if forbidden_extension is not None:
+                    forbidden_extensions = forbidden_extension.split(';')
+                    extension_arr = os.path.splitext(val)
+                    extension_val = extension_arr[1].lower()
+                    # リストの中身を全て小文字に変更
+                    forbidden_extensions = list(map(lambda e: e.lower(), forbidden_extensions))
+                    if extension_val in forbidden_extensions:
+                        msg = "禁止拡張子(閾値:{},値{})[{}]".format(forbidden_extensions, extension_val, self.rest_key_name)
+                        retBool = False
+                        return retBool, msg
+            else:
                 retBool = False
-                msg = "バイト数超過　(閾値:{},値{})[{}]".format(upload_max_size, len(decode_option), self.rest_key_name)
+                msg = "{}のbase64文字列がありません。".format(val)
                 return retBool, msg
-        else:
-            retBool = False
-            msg = "バイト数無し (閾値:{},値{})[{}]".format(upload_max_size, len(decode_option), self.rest_key_name)
-            return retBool, msg
-
-        # 禁止拡張子チェック
-        if forbidden_extension is not None:
-            forbidden_extensions = forbidden_extension.split(';')
-            extension_arr = os.path.splitext(val)
-            extension_val = extension_arr[1].lower()
-            # リストの中身を全て小文字に変更
-            forbidden_extensions = list(map(lambda e: e.lower(), forbidden_extensions))
-            if extension_val in forbidden_extensions:
-                msg = "禁止拡張子(閾値:{},値{})[{}]".format(forbidden_extensions, extension_val, self.rest_key_name)
-                retBool = False
-                return retBool, msg
-            
         return retBool,
 
     def after_iud_common_action(self, val="", option={}):

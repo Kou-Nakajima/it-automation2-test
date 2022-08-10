@@ -76,7 +76,7 @@ def rest_filter(objdbca, menu, filter_parameter):
     privilege = check_auth_menu(menu, objdbca)
     
     # 『メニュー-テーブル紐付管理』の取得とシートタイプのチェック
-    sheet_type_list = ['0', '1', '2', '3', '4']
+    sheet_type_list = ['0', '1', '2', '3', '4', '14']
     menu_table_link_record = check_sheet_type(menu, sheet_type_list, objdbca)
 
     mode = 'nomal'

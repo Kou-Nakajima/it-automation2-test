@@ -114,6 +114,7 @@ CREATE TABLE T_MENU_COLUMN
     NUM_DEFAULT_VALUE               INT,                                        -- 整数 初期値
     FLOAT_MAX                       DOUBLE,                                     -- 小数 最大値
     FLOAT_MIN                       DOUBLE,                                     -- 小数 最小値
+    FLOAT_DIGIT                     INT,                                        -- 小数 桁数
     FLOAT_DEFAULT_VALUE             DOUBLE,                                     -- 小数 初期値
     DATETIME_DEFAULT_VALUE          DATETIME,                                   -- 日時 初期値
     DATE_DEFAULT_VALUE              DATE,                                       -- 日付 初期値
@@ -162,6 +163,7 @@ CREATE TABLE T_MENU_COLUMN_JNL
     NUM_DEFAULT_VALUE               INT,                                        -- 整数 初期値
     FLOAT_MAX                       DOUBLE,                                     -- 小数 最大値
     FLOAT_MIN                       DOUBLE,                                     -- 小数 最小値
+    FLOAT_DIGIT                     INT,                                        -- 小数 桁数
     FLOAT_DEFAULT_VALUE             DOUBLE,                                     -- 小数 初期値
     DATETIME_DEFAULT_VALUE          DATETIME,                                   -- 日時 初期値
     DATE_DEFAULT_VALUE              DATE,                                       -- 日付 初期値

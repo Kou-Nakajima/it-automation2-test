@@ -15,7 +15,7 @@
 import connexion
 from common_libs.common import *  # noqa: F403
 from libs import menu_create as menu_create_lib
-from common_libs.api import api_filter
+from common_libs.api import api_filter, check_request_body
 
 
 @api_filter
@@ -35,6 +35,9 @@ def define_and_execute_menu_create(organization_id, workspace_id, body=None):  #
     """
     # DB接続
     objdbca = DBConnectWs(workspace_id)  # noqa: F405
+    
+    # bodyのjson形式チェック
+    check_request_body()
     
     create_param = {}
     if connexion.request.is_json:
@@ -62,6 +65,9 @@ def execute_menu_create(organization_id, workspace_id, body=None):  # noqa: E501
     """
     # DB接続
     objdbca = DBConnectWs(workspace_id)  # noqa: F405
+    
+    # bodyのjson形式チェック
+    check_request_body()
     
     exec_target = {"create_new": {}, "initialize": {}, "edit": {}}
     if connexion.request.is_json:

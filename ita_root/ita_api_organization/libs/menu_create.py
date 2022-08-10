@@ -18,6 +18,7 @@ from common_libs.loadtable import *  # noqa: F403
 from flask import g
 from libs.organization_common import check_auth_menu
 from libs.menu_info import add_tmp_column_group, collect_column_group_sort_order, collect_parent_sord_order
+from common_libs.api import check_request_body_key
 
 
 def collect_menu_create_data(objdbca):
@@ -225,6 +226,7 @@ def collect_exist_menu_create_data(objdbca, menu_create):
             if column_class_name == "FloatColumn":
                 col_detail["decimal_maximum_value"] = recode.get('FLOAT_MAX')  # 小数 最大値
                 col_detail["decimal_minimum_value"] = recode.get('FLOAT_MIN')  # 小数 最小値
+                col_detail["decimal_digit"] = recode.get('decimal_digit')  # 小数 桁数
                 col_detail["decimal_default_value"] = recode.get('FLOAT_DEFAULT_VALUE')  # 小数 初期値
             
             # カラムクラス「日時」用のパラメータを追加
@@ -279,7 +281,11 @@ def collect_exist_menu_create_data(objdbca, menu_create):
         
         # 大元のカラムの並び順を作成し格納
         # ####メモ：縦メニュー用の考慮がされていないため、最終的な修正が必要。
-        menu_info['menu']['columns']  = collect_parent_sord_order(column_info_data, column_group_parent_of_child, key_to_id)
+        menu_info['menu']['columns'] = collect_parent_sord_order(column_info_data, column_group_parent_of_child, key_to_id)
+    
+    # カラム情報およびカラムグループ情報の個数を取得し、menu_info['menu']に格納
+    menu_info['menu']['number_item'] = len(column_info_data)
+    menu_info['menu']['number_group'] = len(column_group_info_data)
     
     # カラム情報を格納
     menu_info['column'] = column_info_data
@@ -298,7 +304,6 @@ def _collect_common_menu_create_data(objdbca):
         【内部呼び出し用】メニュー定義・作成用情報の共通部分取得
         ARGS:
             objdbca:DB接クラス  DBConnectWs()
-            create_param: メニュー定義用パラメータ
         RETRUN:
             common_data
     """
@@ -435,19 +440,12 @@ def _create_new_execute(objdbca, create_param):
     
     # 変数定義
     lang = g.get('LANGUAGE')
+    user_id = g.get('USER_ID')
     
     # 登録するためのデータを抽出
-    menu_data = create_param.get('menu')
+    menu_data = check_request_body_key(create_param, 'menu')  # "menu" keyが無かったら400-00002エラー
+    column_data_list = check_request_body_key(create_param, 'column')  # "column" keyが無かったら400-00002エラー
     group_data_list = create_param.get('group')
-    column_data_list = create_param.get('column')
-    if not menu_data or not column_data_list:
-        status = False
-        msg = "必要なデータがありません。"
-        result_data = {
-            'status': status,
-            'message': msg
-        }
-        return result_data
     
     # 「メニュー作成状態」のステータス名称(未作成)を取得
     ret = objdbca.table_select(t_menu_create_done_status, 'WHERE DONE_STATUS_ID = %s AND DISUSE_FLAG = %s', [1, 0])
@@ -627,6 +625,7 @@ def _create_new_execute(objdbca, create_param):
             if column_class == "FloatColumn":
                 parameter["decimal_maximum_value"] = column_data.get('decimal_maximum_value')  # 小数 最大値
                 parameter["decimal_minimum_value"] = column_data.get('decimal_minimum_value')  # 小数 最小値
+                parameter["decimal_digit"] = column_data.get('decimal_digit')  # 小数 桁数
                 parameter["decimal_default_value"] = column_data.get('decimal_default_value')  # 小数 初期値
             
             # カラムクラス「日時」用のパラメータを追加
@@ -708,7 +707,8 @@ def _create_new_execute(objdbca, create_param):
             "STATUS_ID": status_id,
             "CREATE_TYPE": create_type,
             "MENU_MATERIAL": "",
-            "DISUSE_FLAG": "0"
+            "DISUSE_FLAG": "0",
+            "LAST_UPDATE_USER": user_id
         }
         primary_key_name = 'HISTORY_ID'
         ret = objdbca.table_insert(t_menu_create_history, data_list, primary_key_name)

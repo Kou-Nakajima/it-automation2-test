@@ -1082,6 +1082,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/ERROR_TEMPLATE'
       x-openapi-router-controller: controllers.user_info_controller
+  /api/{organization_id}/workspaces/{workspace_id}/ita/version/:
+    get:
+      tags:
+      - System Info
+      description: ITAのバージョン情報を取得する
+      operationId: get_ita_version
+      parameters:
+      - name: organization_id
+        in: path
+        description: OrganizationID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: workspace_id
+        in: path
+        description: WorkspaceID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_11'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+      x-openapi-router-controller: controllers.system_info_controller
   /api/{organization_id}/workspaces/{workspace_id}/ita/create/execute/:
     post:
       tags:
@@ -1116,7 +1159,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1164,7 +1207,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1207,7 +1250,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1258,7 +1301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1317,7 +1360,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1376,7 +1419,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1427,7 +1470,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_12'
+                $ref: '#/components/schemas/inline_response_200_13'
         "401":
           description: Unauthorized
           content:
@@ -1486,7 +1529,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1543,7 +1586,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1608,7 +1651,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1659,7 +1702,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_13'
+                $ref: '#/components/schemas/inline_response_200_14'
         "401":
           description: Unauthorized
           content:
@@ -1846,7 +1889,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -1905,7 +1948,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_12'
+                $ref: '#/components/schemas/inline_response_200_13'
         "401":
           description: Unauthorized
           content:
@@ -1964,7 +2007,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_14'
+                $ref: '#/components/schemas/inline_response_200_15'
         "401":
           description: Unauthorized
           content:
@@ -1983,7 +2026,7 @@ paths:
       tags:
       - Conductor Controll
       description: Conductor作業の予約取り消し
-      operationId: patch_conductor_cansel
+      operationId: patch_conductor_cancel
       parameters:
       - name: organization_id
         in: path
@@ -2017,13 +2060,18 @@ paths:
         explode: false
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -2076,13 +2124,18 @@ paths:
         explode: false
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -2143,13 +2196,18 @@ paths:
         explode: false
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -2208,7 +2266,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_15'
+                $ref: '#/components/schemas/inline_response_200_16'
         "401":
           description: Unauthorized
           content:
@@ -2267,7 +2325,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_16'
+                $ref: '#/components/schemas/inline_response_200_17'
         "401":
           description: Unauthorized
           content:
@@ -2323,7 +2381,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_17'
+                $ref: '#/components/schemas/inline_response_200_18'
         "401":
           description: Unauthorized
           content:
@@ -2381,7 +2439,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_17'
+                $ref: '#/components/schemas/inline_response_200_18'
         "401":
           description: Unauthorized
           content:
@@ -2437,7 +2495,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_17'
+                $ref: '#/components/schemas/inline_response_200_18'
         "401":
           description: Unauthorized
           content:
@@ -2496,7 +2554,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -2555,7 +2613,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -2614,7 +2672,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "401":
           description: Unauthorized
           content:
@@ -2665,7 +2723,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_18'
+                $ref: '#/components/schemas/inline_response_200_19'
         "401":
           description: Unauthorized
           content:
@@ -3683,12 +3741,21 @@ components:
           type: string
           example: 000-00000
         data:
-          type: boolean
+          type: object
+          example:
+            version: string
+            installed_driver:
+            - string
+            - string
         message:
           type: string
       example:
         result: 000-00000
-        data: true
+        data:
+          version: string
+          installed_driver:
+          - string
+          - string
         message: message
     inline_response_200_12:
       type: object
@@ -3697,7 +3764,21 @@ components:
           type: string
           example: 000-00000
         data:
-          $ref: '#/components/schemas/inline_response_200_12_data'
+          type: boolean
+        message:
+          type: string
+      example:
+        result: 000-00000
+        data: true
+        message: message
+    inline_response_200_13:
+      type: object
+      properties:
+        result:
+          type: string
+          example: 000-00000
+        data:
+          $ref: '#/components/schemas/inline_response_200_13_data'
         message:
           type: string
       example:
@@ -3742,14 +3823,14 @@ components:
             - id: string
               name: string
         message: message
-    inline_response_200_13:
+    inline_response_200_14:
       type: object
       properties:
         result:
           type: string
           example: 000-00000
         data:
-          $ref: '#/components/schemas/inline_response_200_13_data'
+          $ref: '#/components/schemas/inline_response_200_14_data'
         message:
           type: string
       example:
@@ -3841,14 +3922,14 @@ components:
         conductor_data:
           type: object
       description: 作業実行するConductorの構成情報
-    inline_response_200_14:
+    inline_response_200_15:
       type: object
       properties:
         result:
           type: string
           example: 000-00000
         data:
-          $ref: '#/components/schemas/inline_response_200_14_data'
+          $ref: '#/components/schemas/inline_response_200_15_data'
         message:
           type: string
       example:
@@ -3885,7 +3966,7 @@ components:
             conductor_instance_id: ConductorインスタンスID
           conductor_class: {}
         message: message
-    inline_response_200_15:
+    inline_response_200_16:
       type: object
       properties:
         result:
@@ -3900,7 +3981,7 @@ components:
         result: 000-00000
         data: All movement input data zip base64 string
         message: message
-    inline_response_200_16:
+    inline_response_200_17:
       type: object
       properties:
         result:
@@ -3926,7 +4007,7 @@ components:
           type: string
           example: YYYY/MM/DD hh:mm
       description: 作業実行するDriverの構成情報
-    inline_response_200_17:
+    inline_response_200_18:
       type: object
       properties:
         result:
@@ -3965,14 +4046,14 @@ components:
           type: string
           example: YYYY/MM/DD hh:mm
       description: 作業実行するDriverの構成情報
-    inline_response_200_18:
+    inline_response_200_19:
       type: object
       properties:
         result:
           type: string
           example: 000-00000
         data:
-          $ref: '#/components/schemas/inline_response_200_18_data'
+          $ref: '#/components/schemas/inline_response_200_19_data'
         message:
           type: string
       example:
@@ -4353,7 +4434,7 @@ components:
             id: "10109"
             menu_name: メニュー9
             menu_name_rest: menu_9
-    inline_response_200_12_data:
+    inline_response_200_13_data:
       type: object
       properties:
         list:
@@ -4399,7 +4480,7 @@ components:
           conductors:
           - id: string
             name: string
-    inline_response_200_13_data:
+    inline_response_200_14_data:
       type: object
       properties:
         conductor_list:
@@ -4474,7 +4555,7 @@ components:
               column_type: 0
               column_group_name: column_group_name
               ref_sort_conditions: ref_sort_conditions
-    inline_response_200_14_data:
+    inline_response_200_15_data:
       type: object
       properties:
         conductor_class:
@@ -4514,7 +4595,7 @@ components:
           remarks: 備考
           conductor_instance_id: ConductorインスタンスID
         conductor_class: {}
-    inline_response_200_18_data:
+    inline_response_200_19_data:
       type: object
       properties:
         movement_list:

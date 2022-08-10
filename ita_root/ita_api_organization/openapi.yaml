@@ -907,7 +907,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ERROR_TEMPLATE'
-  
   /api/{organization_id}/workspaces/{workspace_id}/ita/menu/{menu}/excel/maintenance/:
     post:
       tags:
@@ -1219,6 +1218,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ERROR_TEMPLATE'
+
+  /api/{organization_id}/workspaces/{workspace_id}/ita/version/:
+    get:
+      tags:
+        - System Info
+      description: ITAのバージョン情報を取得する
+      operationId: getItaVersion
+      parameters:
+        - name: organization_id
+          in: path
+          description: OrganizationID
+          required: true
+          schema:
+            type: string
+        - name: workspace_id
+          in: path
+          description: WorkspaceID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: 000-00000
+                  data:
+                    type: object
+                    example: 
+                      {
+                        version: string,
+                        installed_driver:[
+                          string,
+                          string
+                          ]
+                      }
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+
   /api/{organization_id}/workspaces/{workspace_id}/ita/create/execute/:
     post:
       tags:
@@ -2194,7 +2249,7 @@ paths:
       tags:
         - Conductor Controll
       description: Conductor作業の予約取り消し
-      operationId: patchConductorCansel
+      operationId: patchConductorCancel
       parameters:
         - name: organization_id
           in: path
@@ -2220,6 +2275,11 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
         '200':
           description: Success
@@ -2279,6 +2339,11 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
         '200':
           description: Success
@@ -2344,6 +2409,11 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
       responses:
         '200':
           description: Success

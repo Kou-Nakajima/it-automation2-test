@@ -71,7 +71,7 @@ def convert_conductor_ver_1(option):
             del json_setting['conductor']['ACCESS_AUTH']
         if 'NOTICE_INFO' in json_setting['conductor']:
             del json_setting['conductor']['NOTICE_INFO']
-        tmp_setting = json.dumps(json_setting)
+        tmp_setting = json.dumps(json_setting, ensure_ascii=False)
     option['entry_parameter']['parameter']['setting'] = tmp_setting
     # pprint.pprint(option)
     return option
