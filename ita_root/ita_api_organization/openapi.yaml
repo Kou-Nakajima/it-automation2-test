@@ -1697,7 +1697,7 @@ paths:
                     type: string
                     example: 000-00000
                   data:
-                    type: boolean
+                    type: object
                   message:
                     type: string
         '401':
@@ -2030,6 +2030,124 @@ paths:
                     type: object
                     items: {}
                     example: {"id1": "name1", "id2": "name2", "id3": "name3"}
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+
+
+  /api/{organization_id}/workspaces/{workspace_id}/ita/menu/{menu}/conductor/execute/class/info/:
+    get:
+      tags:
+        - Conductor Controll
+      description: ConductorClassの基本情報取得
+      operationId: getConductorExecuteClassInfo
+      parameters:
+        - name: organization_id
+          in: path
+          description: OrganizationID
+          required: true
+          schema:
+            type: string
+        - name: workspace_id
+          in: path
+          description: WorkspaceID
+          required: true
+          schema:
+            type: string
+        - name: menu
+          in: path
+          description: メニュー名
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: 000-00000
+                  data:
+                    type: object
+                    properties:
+                      list:
+                        $ref: '#/components/schemas/CONDUCTOR_INFO_LIST'
+                      dict:
+                        $ref: '#/components/schemas/CONDUCTOR_INFO_DICT'
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_TEMPLATE'
+
+  /api/{organization_id}/workspaces/{workspace_id}/ita/menu/{menu}/conductor/execute/class/{conductor_class_id}/:
+    get:
+      tags:
+        - Conductor Controll
+      description: ConductorClassの情報取得
+      operationId: getConductorExecuteClassData
+      parameters:
+        - name: organization_id
+          in: path
+          description: OrganizationID
+          required: true
+          schema:
+            type: string
+        - name: workspace_id
+          in: path
+          description: WorkspaceID
+          required: true
+          schema:
+            type: string
+        - name: menu
+          in: path
+          description: メニュー名
+          required: true
+          schema:
+            type: string
+        - name: conductor_class_id
+          in: path
+          description: Conductor Class ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: 000-00000
+                  data:
+                    type: object
                   message:
                     type: string
         '401':

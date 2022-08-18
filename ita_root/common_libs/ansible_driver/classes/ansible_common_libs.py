@@ -49,33 +49,30 @@ class AnsibleCommonLibs():
         global LV_RUN_MODE
         LV_RUN_MODE = run_mode
 
-    def set_run_mode(run_mode):
+    def set_run_mode(self, run_mode):
         """
         処理モードを変数定義ファイルチェックに設定
-
         Arguments:
             run_mode: 処理モード　LC_RUN_MODE_STD/LC_RUN_MODE_VARFILE
         """
         global LV_RUN_MODE
         LV_RUN_MODE = run_mode
 
-    def get_run_mode():
+    def get_run_mode(self):
         """
         処理モード取得
-
         returns:
             処理モード　LC_RUN_MODE_STD/LC_RUN_MODE_VARFILE
         """
         return LV_RUN_MODE
 
-    def get_cpf_vars_master(in_cpf_var_name, WS_DB):
+    def get_cpf_vars_master(self, in_cpf_var_name, WS_DB):
         """
         ファイル管理の情報をデータベースより取得する。
         
         Arguments:
             in_cpf_var_name: CPF変数名
             WS_DB: WorkspaceDBインスタンス
-
         Returns:
             is success:(bool)
             in_cpf_key: PKey格納変数
@@ -105,7 +102,6 @@ class AnsibleCommonLibs():
         Arguments:
             ina_cpf_vars_list: CPF変数リスト
             WS_DB: WorkspaceDBインスタンス
-
         Returns:
             is success:(bool)
             tmp_ina_cpf_vars_list: CPF変数リスト
@@ -168,14 +164,13 @@ class AnsibleCommonLibs():
 
         return bool_ret, tmp_ina_cpf_vars_list, in_errmsg
     
-    def get_tpf_vars_master(in_tpf_var_name, WS_DB):
+    def get_tpf_vars_master(self, in_tpf_var_name, WS_DB):
         """
         テンプレート管理の情報をデータベースより取得する。
         
         Arguments:
             in_cpf_var_name: TPF変数名
             WS_DB: WorkspaceDBインスタンス
-
         Returns:
             is success:(bool)
             ina_row: 登録情報
@@ -202,7 +197,6 @@ class AnsibleCommonLibs():
         Arguments:
             ina_tpf_vars_list: TPF変数リスト
             WS_DB: WorkspaceDBインスタンス
-
         Returns:
             is success:(bool)
             ina_tpf_vars_list: TPF変数リスト
@@ -280,7 +274,7 @@ class AnsibleCommonLibs():
                 
             return bool_ret, tmp_ina_tpf_vars_list, in_errmsg
     
-    def get_gbl_vars_master(in_gbl_var_name, WS_DB):
+    def get_gbl_vars_master(self, in_gbl_var_name, WS_DB):
         """
         グローバル管理の情報をデータベースより取得する。
         
@@ -367,14 +361,13 @@ class AnsibleCommonLibs():
         
         return bool_ret, ina_gbl_vars_list, in_errmsg
     
-    def common_varss_aanalys(in_filename, out_filename, fillter_vars=False):
+    def common_varss_aanalys(self, in_filename, out_filename, fillter_vars=False):
         """
         Legacy/PioneerでアップロードされるPlaybook素材よの共通変数を抜き出す
         FileUploadColumn:checkTempFileBeforeMoveOnPreLoadイベント用
         
         Arguments:
             in_filename: アップロードされたデータが格納されているファイル名
-
         Returns:
             ret_array: is success, エラーメッセージ 
         """
@@ -457,7 +450,7 @@ class AnsibleCommonLibs():
         
         return ret_array
     
-    def select_db_recodes(in_sql, in_key, WS_DB):
+    def select_db_recodes(self, in_sql, in_key, WS_DB):
         """
         指定されたデータベースの全有効レコードを取得する。
         
@@ -465,7 +458,6 @@ class AnsibleCommonLibs():
             in_sql: SQL
             in_key: 登録レコードの配列のキー項目
             WS_DB: WorkspaceDBインスタンス
-
         Returns:
             ina_row: 取得レコードの配列
         """

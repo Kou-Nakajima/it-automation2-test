@@ -227,7 +227,7 @@ class FileUploadColumn(Column):
         """
         result = None
 
-        if file_name is None:
+        if file_name is not None:
             if len(file_name) != 0:
                 workspace_id = g.get("WORKSPACE_ID")
                 menu_id = self.get_menu()

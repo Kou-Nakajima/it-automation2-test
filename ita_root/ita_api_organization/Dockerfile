@@ -11,12 +11,14 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-FROM    registry.access.redhat.com/ubi8/ubi-init as common_build
-
 ARG USERNAME=app_user
 ARG GROUPNAME=app_user
-
 ARG APP_PATH=/exastro
+
+FROM    registry.access.redhat.com/ubi8/ubi-init as common_build
+ARG USERNAME
+ARG GROUPNAME
+ARG APP_PATH
 
 RUN dnf install -y \
     gcc \
@@ -50,6 +52,9 @@ RUN dnf install -y \
 #   Specify options when creating this image: --target develop_build
 #
 FROM    common_build as develop_build
+ARG USERNAME
+ARG GROUPNAME
+ARG APP_PATH
 
 RUN dnf install -y \
     sudo \
@@ -84,12 +89,14 @@ CMD ["sudo","-E","httpd","-D","FOREGROUND"]
 # Build for production
 #
 FROM    common_build
+ARG USERNAME
+ARG GROUPNAME
+ARG APP_PATH
 
-USER $USERNAME
 WORKDIR $APP_PATH
 
-COPY ./ita_root/ita_api_organization/httpd.conf/httpd.conf /etc/httpd/conf/httpd.conf
-COPY ./ita_root/ita_api_organization/httpd.conf/wsgi.conf /etc/httpd/conf.d/wsgi.conf
+COPY ./ita_root/ita_api_organization/config/httpd.conf/httpd.conf /etc/httpd/conf/httpd.conf
+COPY ./ita_root/ita_api_organization/config/httpd.conf/wsgi.conf /etc/httpd/conf.d/wsgi.conf
 
 COPY ./ita_root/ita_api_organization/ $APP_PATH/
 COPY ./ita_root/common_libs/ $APP_PATH/common_libs/

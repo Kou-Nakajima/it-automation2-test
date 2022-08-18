@@ -167,7 +167,7 @@ def get_conductor_execute_info(organization_id, workspace_id, menu):  # noqa: E5
     chk_auth_manu = execute_info.call_check_auth_menu(objdbca, menu)  # noqa: F841
     
     # 作業実行関連のメニューの基本情報および項目情報の取得
-    target_menu = ["operation_list", "movement_list", "conductor_list"]
+    target_menu = ["operation_list", "conductor_list"]
     data = execute_info.call_collect_menu_info(objdbca, target_menu)
     return data,
 
@@ -234,6 +234,61 @@ def post_execute_filter(organization_id, workspace_id, menu, target, body=None):
         
     # メニューのカラム情報を取得
     result_data = execute_info.rest_filter(objdbca, target, filter_parameter)
+    return result_data,
+
+
+@api_filter
+def get_conductor_execute_class_info(organization_id, workspace_id, menu):  # noqa: E501
+    """get_conductor_execute_class_info
+
+    ConductorClassの基本情報取得 # noqa: E501
+
+    :param organization_id: OrganizationID
+    :type organization_id: str
+    :param workspace_id: WorkspaceID
+    :type workspace_id: str
+    :param menu: メニュー名
+    :type menu: str
+
+    :rtype: InlineResponse20012
+    """
+
+    # DB接続
+    objdbca = DBConnectWs(workspace_id)  # noqa: F405
+
+    # メニューに対するロール権限をチェック（Falseなら権限エラー）
+    chk_auth_manu = execute_info.call_check_auth_menu(objdbca, menu)  # noqa: F841
+
+    # メニューのカラム情報を取得
+    result_data = conductor_controll.get_conductor_execute_class_info(objdbca, menu)
+    return result_data,
+
+
+@api_filter
+def get_conductor_execute_class_data(organization_id, workspace_id, menu, conductor_class_id):  # noqa: E501
+    """get_conductor_execute_class_data
+
+    ConductorClassの情報取得 # noqa: E501
+
+    :param organization_id: OrganizationID
+    :type organization_id: str
+    :param workspace_id: WorkspaceID
+    :type workspace_id: str
+    :param menu: メニュー名
+    :type menu: str
+    :param conductor_class_id: Conductor Class ID
+    :type conductor_class_id: str
+
+    :rtype: InlineResponse20011
+    """
+    # DB接続
+    objdbca = DBConnectWs(workspace_id)  # noqa: F405
+
+    # メニューに対するロール権限をチェック（Falseなら権限エラー）
+    chk_auth_manu = execute_info.call_check_auth_menu(objdbca, menu)  # noqa: F841
+
+    # メニューのカラム情報を取得
+    result_data = conductor_controll.get_conductor_data_execute(objdbca, menu, conductor_class_id)
     return result_data,
 
 

@@ -44,3 +44,9 @@ class AppException(Exception):
         self.args = result_code, log_msg_args, api_msg_args
 
     # def __str__(self):
+
+
+class ValidationException(Exception):
+    """
+    exception class for application
+    """

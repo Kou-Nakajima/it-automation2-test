@@ -1736,21 +1736,25 @@ class loadTable():
         """
         retBool = True
         msg = ''
-        exec_config = self.get_menu_before_validate_register()
-        # parameter = target_option.get('parameter')
-        # file = target_option.get('file')
-        external_validate_path = 'common_libs.validate.valid_{}'.format(self.get_menu_id())
-        if exec_config is not None:
+        try:
+            exec_config = self.get_menu_before_validate_register()
+            # parameter = target_option.get('parameter')
+            # file = target_option.get('file')
+            external_validate_path = 'common_libs.validate.valid_{}'.format(self.get_menu_id())
             if exec_config is not None:
-                exec_func = importlib.import_module(external_validate_path)  # noqa: F841
-                eval_str = 'exec_func.{}(self.objdbca, self.objtable, target_option)'.format(exec_config)
-                tmp_exec = eval(eval_str)
+                if exec_config is not None:
+                    exec_func = importlib.import_module(external_validate_path)  # noqa: F841
+                    eval_str = 'exec_func.{}(self.objdbca, self.objtable, target_option)'.format(exec_config)
+                    tmp_exec = eval(eval_str)
 
-                if tmp_exec[0] is not True:
-                    retBool = False
-                    msg = tmp_exec[1]
-                else:
-                    target_option = tmp_exec[2]
+                    if tmp_exec[0] is not True:
+                        retBool = False
+                        msg = tmp_exec[1]
+                    else:
+                        target_option = tmp_exec[2]
+        except Exception:
+            retBool = False
+            msg = 'import_module error'
 
         return retBool, msg, target_option,
 
@@ -1765,20 +1769,24 @@ class loadTable():
         """
         retBool = True
         msg = ''
-        exec_config = self.get_menu_after_validate_register()
-        # parameter = target_option.get('parameter')
-        # file = target_option.get('file')
-        external_validate_path = 'common_libs.validate.valid_{}'.format(self.get_menu_id())
-        if exec_config is not None:
+        try:
+            exec_config = self.get_menu_after_validate_register()
+            # parameter = target_option.get('parameter')
+            # file = target_option.get('file')
+            external_validate_path = 'common_libs.validate.valid_{}'.format(self.get_menu_id())
             if exec_config is not None:
-                exec_func = importlib.import_module(external_validate_path)  # noqa: F841
-                eval_str = 'exec_func.{}(self.objdbca, self.objtable, target_option)'.format(exec_config)
-                tmp_exec = eval(eval_str)
-                if tmp_exec[0] is not True:
-                    retBool = False
-                    msg = tmp_exec[1]
-                else:
-                    target_option = tmp_exec[2]
+                if exec_config is not None:
+                    exec_func = importlib.import_module(external_validate_path)  # noqa: F841
+                    eval_str = 'exec_func.{}(self.objdbca, self.objtable, target_option)'.format(exec_config)
+                    tmp_exec = eval(eval_str)
+                    if tmp_exec[0] is not True:
+                        retBool = False
+                        msg = tmp_exec[1]
+                    else:
+                        target_option = tmp_exec[2]
+        except Exception:
+            retBool = False
+            msg = 'import_module error'
 
         return retBool, msg, target_option,
 
@@ -1950,22 +1958,26 @@ class loadTable():
                     tmp_col_name = self.get_col_name(tmp_keys)
                     if input_item != '1':
                         if tmp_col_name not in column_list:
-                            del parameter[tmp_keys]
+                            if tmp_keys in parameter:
+                                del parameter[tmp_keys]
 
                     # 最終更新者を除外
                     if tmp_col_name == 'LAST_UPDATE_USER':
-                        del parameter[tmp_keys]
+                        if tmp_keys in parameter:
+                            del parameter[tmp_keys]
 
                     # 登録時最終更新日時を除外
                     if cmd_type == CMD_REGISTER:
                         if tmp_col_name == 'LAST_UPDATE_TIMESTAMP':
-                            del parameter[tmp_keys]
+                            if tmp_keys in parameter:
+                                del parameter[tmp_keys]
 
                     if cmd_type == CMD_DISCARD:
                         if tmp_col_name not in primary_key_list:
                             # 廃止時に備考の更新は例外で可
                             if tmp_col_name != 'NOTE':
-                                del parameter[tmp_keys]
+                                if tmp_keys in parameter:
+                                    del parameter[tmp_keys]
                     self.set_columnclass(tmp_keys, cmd_type)
                 else:
                     del parameter[tmp_keys]

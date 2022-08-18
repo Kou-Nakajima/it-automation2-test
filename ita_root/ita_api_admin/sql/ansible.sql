@@ -727,6 +727,7 @@ CREATE TABLE T_ANSR_NESTVAR_MEMBER_COL_COMB
     MVMT_VAR_LINK_ID                VARCHAR(40),                                -- 変数名
     ARRAY_MEMBER_ID                 VARCHAR(40),                                -- 多段変数項番
     COL_COMBINATION_MEMBER_ALIAS    TEXT,                                       -- プルダウン表示メンバー変数
+    COL_SEQ_VALUE                   TEXT,                                       -- 列順序
     NOTE                            TEXT,                                       -- 備考
     DISUSE_FLAG                     VARCHAR(1),                                 -- 廃止フラグ
     LAST_UPDATE_TIMESTAMP           DATETIME(6),                                -- 最終更新日時

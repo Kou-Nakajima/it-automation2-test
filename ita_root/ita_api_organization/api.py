@@ -25,6 +25,7 @@ from libs.organization_common import before_request_handler
 load_dotenv(override=True)
 
 flask_app = connexion.FlaskApp(__name__, specification_dir='./swagger/')
+app = flask_app.app
 flask_app.add_api('swagger.yaml')
 
 flask_app.app.before_request(before_request_handler)
