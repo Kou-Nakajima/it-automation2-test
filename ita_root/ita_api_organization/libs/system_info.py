@@ -35,7 +35,7 @@ def collect_ita_version(objdbca):
     
     # 件数確認
     if len(ret) != 1:
-        raise AppException("200-00601")
+        raise AppException("499-00601")
 
     if lang == 'ja':
         installed_driver = json.loads(ret[0].get('INSTALLED_DRIVER_JA'))

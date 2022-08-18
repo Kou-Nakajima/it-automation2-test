@@ -172,7 +172,7 @@ class ConductorExecuteLibs():
                         id = row.get(pk_col)
                         result[target_key].setdefault(id, row)
         except Exception:
-            status_code = "200-00803"
+            status_code = "499-00803"
             log_msg_args = []
             api_msg_args = []
             raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
@@ -403,7 +403,7 @@ class ConductorExecuteLibs():
             conductor_class_id = parameter.get('conductor_class_id')
             operation_id = parameter.get('operation_id')
             schedule_date = parameter.get('schedule_date')
-            status_code = "200-00805"
+            status_code = "499-00805"
             log_msg_args = [conductor_class_id, operation_id, schedule_date]
             api_msg_args = [conductor_class_id, operation_id, schedule_date]
             raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
@@ -626,7 +626,7 @@ class ConductorExecuteLibs():
                         result['list']['operation'].append(tmp_arr)
                     
         except Exception:
-            status_code = "200-00803"
+            status_code = "499-00803"
             log_msg_args = []
             api_msg_args = []
             raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
@@ -731,7 +731,7 @@ class ConductorExecuteLibs():
             result['node'] = node_status
             
         except Exception:
-            status_code = "200-00803"
+            status_code = "499-00803"
             log_msg_args = []
             api_msg_args = []
             raise AppException(status_code, log_msg_args, api_msg_args)  # noqa: F405
@@ -804,11 +804,11 @@ class ConductorExecuteLibs():
                     }
                     tmp_result = objconductor.exec_maintenance(conductor_parameter, self.target_uuid, self.cmd_type)
                     if tmp_result[0] is not True:
-                        status_code = "200-00807"
+                        status_code = "499-00807"
                         msg_args = [mode, conductor_instance_id, ci_status_id]
                         raise Exception()  # noqa: F405
                 else:
-                    status_code = "200-00808"
+                    status_code = "499-00808"
                     msg_args = [conductor_instance_id, ci_status_id]
                     raise Exception()  # noqa: F405
 
@@ -821,7 +821,7 @@ class ConductorExecuteLibs():
                 ]
                 if ci_status_id in scram_accept_status:
                     if ci_abort_execute_flag != '0':
-                        status_code = "200-00810"
+                        status_code = "499-00810"
                         msg_args = [conductor_instance_id, ci_status_id, ci_abort_execute_flag]
                         raise Exception()  # noqa: F405
                     tmp_parameter.setdefault('conductor_instance_id', conductor_instance_id)
@@ -833,11 +833,11 @@ class ConductorExecuteLibs():
                     }
                     tmp_result = objconductor.exec_maintenance(conductor_parameter, self.target_uuid, self.cmd_type)
                     if tmp_result[0] is not True:
-                        status_code = "200-00807"
+                        status_code = "499-00807"
                         msg_args = [mode, conductor_instance_id, ci_status_id]
                         raise Exception()  # noqa: F405
                 else:
-                    status_code = "200-00809"
+                    status_code = "499-00809"
                     msg_args = [conductor_instance_id, ci_status_id]
                     raise Exception()  # noqa: F405
 
@@ -857,19 +857,19 @@ class ConductorExecuteLibs():
                             }
                             tmp_result = objnode.exec_maintenance(node_parameter, node_instance_id, self.cmd_type)
                             if tmp_result[0] is not True:
-                                status_code = "200-00807"
+                                status_code = "499-00807"
                                 msg_args = [mode, node_instance_id, ci_status_id]
                                 raise Exception()  # noqa: F405
                         else:
-                            status_code = "200-00813"
+                            status_code = "499-00813"
                             msg_args = [conductor_instance_id, node_instance_id, ni_status_id]
                             raise Exception()  # noqa: F405
                     else:
-                        status_code = "200-00812"
+                        status_code = "499-00812"
                         msg_args = [conductor_instance_id, node_instance_id]
                         raise Exception()  # noqa: F405
                 else:
-                    status_code = "200-00811"
+                    status_code = "499-00811"
                     msg_args = [conductor_instance_id, node_instance_id, ni_node_type]
                     raise Exception()  # noqa: F405
 

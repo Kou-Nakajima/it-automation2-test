@@ -35,7 +35,7 @@ def external_valid_menu_before(objdbca, objtable, option):
     CCL = ConductorCommonLibs()
     result = CCL.chk_format(conductor_data)
     if result[0] is False:
-        status_code = '200-00201'
+        status_code = '499-00201'
         msg_args = ["{}".format(result)]
         msg = g.appmsg.get_api_message(status_code, msg_args)
         retBool = result[0]

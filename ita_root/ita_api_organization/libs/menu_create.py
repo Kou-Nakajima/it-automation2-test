@@ -415,7 +415,7 @@ def menu_create_define(objdbca, create_param):
         msg = 'type:' + str(type)
         log_msg_args = [msg]
         api_msg_args = [msg]
-        raise AppException('200-00212', log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException('499-00212', log_msg_args, api_msg_args)  # noqa: F405
     
     # 「新規作成」「編集」「初期化」のどれかを判定
     # 上記のタイプごとに処理を関数分けして、呼び出すようにする。

@@ -623,7 +623,7 @@ class Column():
                     tmp_uuids.append(tmp_rows.get(primary_key_list[0]))
                 retBool = False
                 msg = '{}({}):一意制約'.format(self.rest_key_name, val)
-                status_code = '200-00208'
+                status_code = '499-00208'
                 str_uuids = ', '.join(map(str, tmp_uuids))
                 msg_args = [self.rest_key_name, str_uuids]
                 msg = g.appmsg.get_api_message(status_code, msg_args)
@@ -647,12 +647,12 @@ class Column():
         if result == "1":
             if val is None:
                 retBool = False
-                status_code = '200-00213'
+                status_code = '499-00213'
                 msg_args = [self.get_rest_key_name()]
                 msg = g.appmsg.get_api_message(status_code, msg_args)
             elif len(str(val)) == 0:
                 retBool = False
-                status_code = '200-00213'
+                status_code = '499-00213'
                 msg_args = [self.get_rest_key_name()]
                 msg = g.appmsg.get_api_message(status_code, msg_args)
                     

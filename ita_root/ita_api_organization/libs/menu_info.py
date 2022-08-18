@@ -76,7 +76,7 @@ def collect_menu_info(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00004", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00004", log_msg_args, api_msg_args)  # noqa: F405
     
     menu_group_name = ret[0].get('MENU_GROUP_NAME_' + lang.upper())
     parent_menu_group_id = ret[0].get('PARENT_MENU_GROUP_ID')
@@ -373,7 +373,7 @@ def collect_menu_column_list(objdbca, menu):
     if not ret:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00004", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00004", log_msg_args, api_msg_args)  # noqa: F405
     
     column_list = []
     for recode in ret:
@@ -479,7 +479,7 @@ def collect_search_candidates(objdbca, menu, column):
     if not ret:
         log_msg_args = [menu, column]
         api_msg_args = [menu, column]
-        raise AppException("200-00006", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00006", log_msg_args, api_msg_args)  # noqa: F405
     
     col_name = str(ret[0].get('COL_NAME'))
     column_class_id = str(ret[0].get('COLUMN_CLASS'))
@@ -496,7 +496,7 @@ def collect_search_candidates(objdbca, menu, column):
     if col_name not in ret[0]:
         log_msg_args = [menu, col_name]
         api_msg_args = [menu, col_name]
-        raise AppException("200-00007", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00007", log_msg_args, api_msg_args)  # noqa: F405
     
     # 対象のテーブルからレコードを取得し、対象のカラムの値を一覧化
     ret = objdbca.table_select(table_name, 'WHERE DISUSE_FLAG = %s', [0])

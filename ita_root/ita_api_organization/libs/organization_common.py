@@ -138,7 +138,7 @@ def check_menu_info(menu, wsdb_istc=None):
     if not menu_record:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00002", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00002", log_msg_args, api_msg_args)  # noqa: F405
 
     return menu_record
 
@@ -212,11 +212,11 @@ def check_sheet_type(menu, sheet_type_list, wsdb_istc=None):
     if not menu_table_link_record:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00003", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00003", log_msg_args, api_msg_args)  # noqa: F405
 
     if sheet_type_list and menu_table_link_record[0].get('SHEET_TYPE') not in sheet_type_list:
         log_msg_args = [menu]
         api_msg_args = [menu]
-        raise AppException("200-00001", log_msg_args, api_msg_args)  # noqa: F405
+        raise AppException("499-00001", log_msg_args, api_msg_args)  # noqa: F405
 
     return menu_table_link_record
