@@ -815,6 +815,10 @@ class Column():
             else:
                 start_val = tmp_conf.get('START')
                 end_val = tmp_conf.get('END')
+                if start_val is None:
+                    start_val = ''
+                if end_val is None:
+                    end_val = ''
                 bindkey_s = "__{}_S__".format(self.get_col_name())
                 bindkey_e = "__{}_E__".format(self.get_col_name())
                 if start_val is not None and end_val is not None:
