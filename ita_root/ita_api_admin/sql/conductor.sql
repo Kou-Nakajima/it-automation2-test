@@ -72,10 +72,13 @@ CREATE TABLE T_COMN_CONDUCTOR_INSTANCE
     EXECUTION_USER                  VARCHAR(255),                               -- 作業実行ユーザー
     PARENT_CONDUCTOR_INSTANCE_ID    VARCHAR(40),                                -- 親ConductorインスタンスID
     PARENT_CONDUCTOR_INSTANCE_NAME  VARCHAR(255),                               -- 親Conductorインスタンス名
+    TOP_CONDUCTOR_INSTANCE_ID       VARCHAR(40),                                -- 最上位ConductorインスタンスID
+    TOP_CONDUCTOR_INSTANCE_NAME     VARCHAR(255),                               -- 最上位Conductorインスタンス名
     NOTICE_INFO                     TEXT,                                       -- 通知設定
     NOTICE_DEFINITION               TEXT,                                       -- 通知定義
     STATUS_ID                       VARCHAR(40),                                -- ステータスID
     ABORT_EXECUTE_FLAG              VARCHAR(1),                                 -- 緊急停止フラグ
+    TIME_REGISTER                   DATETIME(5),                                -- 登録日時
     TIME_BOOK                       DATETIME(6),                                -- 予約日時
     TIME_START                      DATETIME(6),                                -- 開始日時
     TIME_END                        DATETIME(6),                                -- 終了日時
@@ -104,10 +107,13 @@ CREATE TABLE T_COMN_CONDUCTOR_INSTANCE_JNL
     EXECUTION_USER                  VARCHAR(255),                               -- 作業実行ユーザー
     PARENT_CONDUCTOR_INSTANCE_ID    VARCHAR(40),                                -- 親ConductorインスタンスID
     PARENT_CONDUCTOR_INSTANCE_NAME  VARCHAR(255),                               -- 親Conductorインスタンス名
+    TOP_CONDUCTOR_INSTANCE_ID       VARCHAR(40),                                -- 最上位ConductorインスタンスID
+    TOP_CONDUCTOR_INSTANCE_NAME     VARCHAR(255),                               -- 最上位Conductorインスタンス名
     NOTICE_INFO                     TEXT,                                       -- 通知設定
     NOTICE_DEFINITION               TEXT,                                       -- 通知定義
     STATUS_ID                       VARCHAR(40),                                -- ステータスID
     ABORT_EXECUTE_FLAG              VARCHAR(1),                                 -- 緊急停止フラグ
+    TIME_REGISTER                   DATETIME(5),                                -- 登録日時
     TIME_BOOK                       DATETIME(6),                                -- 予約日時
     TIME_START                      DATETIME(6),                                -- 開始日時
     TIME_END                        DATETIME(6),                                -- 終了日時
@@ -137,8 +143,10 @@ CREATE TABLE T_COMN_CONDUCTOR_NODE_INSTANCE
     I_CONDUCTOR_CLASS_NAME          VARCHAR(255),                               -- インスタンス元のConductor名
     I_CONDUCTOR_CLASS_JSON          TEXT,                                       -- インスタンス元のConductor情報
     CONDUCTOR_INSTANCE_ID           VARCHAR(40),                                -- ConductorインスタンスID
-    PARENT_CONDUCTOR_INSTANCE_ID    VARCHAR(40),                                -- 最上位の親ConductorインスタンスID
-    PARENT_CONDUCTOR_INSTANCE_NAME  VARCHAR(40),                                -- 最上位の親Conductorインスタンス名
+    PARENT_CONDUCTOR_INSTANCE_ID    VARCHAR(40),                                -- 親ConductorインスタンスID
+    PARENT_CONDUCTOR_INSTANCE_NAME  VARCHAR(255),                               -- 親Conductorインスタンス名
+    TOP_CONDUCTOR_INSTANCE_ID       VARCHAR(40),                                -- 最上位のConductorインスタンスID
+    TOP_CONDUCTOR_INSTANCE_NAME     VARCHAR(255),                               -- 最上位のConductorインスタンス名
     EXECUTION_ID                    VARCHAR(40),                                -- 作業実行ID
     STATUS_ID                       VARCHAR(40),                                -- ステータスID
     STATUS_FILE                     VARCHAR(40),                                -- ステータスファイル
@@ -147,6 +155,7 @@ CREATE TABLE T_COMN_CONDUCTOR_NODE_INSTANCE
     END_TYPE                        VARCHAR(1)  ,                               -- 終了タイプ
     OVRD_OPERATION_ID               VARCHAR(40),                                -- 個別オペレーションID
     OVRD_I_OPERATION_NAME           VARCHAR(255),                               -- 個別オペレーション名
+    TIME_REGISTER                   DATETIME(5),                                -- 登録日時
     TIME_START                      DATETIME(6),                                -- 開始日時
     TIME_END                        DATETIME(6),                                -- 終了日時
     NOTE                            VARCHAR(4000),                              -- 備考
@@ -173,8 +182,10 @@ CREATE TABLE T_COMN_CONDUCTOR_NODE_INSTANCE_JNL
     I_CONDUCTOR_CLASS_NAME          VARCHAR(255),                               -- インスタンス元のConductor名
     I_CONDUCTOR_CLASS_JSON          TEXT,                                       -- インスタンス元のConductor情報
     CONDUCTOR_INSTANCE_ID           VARCHAR(40),                                -- ConductorインスタンスID
-    PARENT_CONDUCTOR_INSTANCE_ID    VARCHAR(40),                                -- 最上位の親ConductorインスタンスID
-    PARENT_CONDUCTOR_INSTANCE_NAME  VARCHAR(40),                                -- 最上位の親Conductorインスタンス名
+    PARENT_CONDUCTOR_INSTANCE_ID    VARCHAR(40),                                -- 親ConductorインスタンスID
+    PARENT_CONDUCTOR_INSTANCE_NAME  VARCHAR(255),                               -- 親Conductorインスタンス名
+    TOP_CONDUCTOR_INSTANCE_ID       VARCHAR(40),                                -- 最上位のConductorインスタンスID
+    TOP_CONDUCTOR_INSTANCE_NAME     VARCHAR(255),                               -- 最上位のConductorインスタンス名
     EXECUTION_ID                    VARCHAR(40),                                -- 作業実行ID
     STATUS_ID                       VARCHAR(40),                                -- ステータスID
     STATUS_FILE                     VARCHAR(40),                                -- ステータスファイル
@@ -183,6 +194,7 @@ CREATE TABLE T_COMN_CONDUCTOR_NODE_INSTANCE_JNL
     END_TYPE                        VARCHAR(1)  ,                               -- 終了タイプ
     OVRD_OPERATION_ID               VARCHAR(40),                                -- 個別オペレーションID
     OVRD_I_OPERATION_NAME           VARCHAR(255),                               -- 個別オペレーション名
+    TIME_REGISTER                   DATETIME(5),                                -- 登録日時
     TIME_START                      DATETIME(6),                                -- 開始日時
     TIME_END                        DATETIME(6),                                -- 終了日時
     NOTE                            VARCHAR(4000),                              -- 備考

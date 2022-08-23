@@ -51,8 +51,8 @@ class AuthTypeParameterRequiredCheck:
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE7'] = "MSG-10238"
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE8'] = "MSG-10239"
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE9'] = "MSG-10240"
-        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE10']= "MSG-10241"
-        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE11']= "MSG-10242"
+        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE10'] = "MSG-10241"
+        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_Loadtable_TowerHostList]['ERROR_TYPE11'] = "MSG-10242"
 
         # AuthType 3:作業実行 機器一覧チェック
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList] = {}
@@ -65,8 +65,8 @@ class AuthTypeParameterRequiredCheck:
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE7'] = "MSG-10216"
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE8'] = "MSG-10217"
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE9'] = "MSG-10218"
-        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE10']= "MSG-10219"
-        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE11']= "MSG-10220"
+        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE10'] = "MSG-10219"
+        self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_DevaiceList]['ERROR_TYPE11'] = "MSG-10220"
 
         # AuthType 4:作業実行 Towerホスト一覧チェック
         self.err_msg_code_ary[AuthTypeParameterRequiredCheck.chkType_WorkflowExec_TowerHostList] = {}

@@ -110,7 +110,7 @@ class NumColumn(Column):
 
                 elif min_num is not None:
                     # 最小値閾値あり
-                    if min_num < val:
+                    if min_num <= val:
                         retBool = True
                     else:
                         retBool = False
@@ -120,7 +120,7 @@ class NumColumn(Column):
                         return retBool, msg
                 elif max_num is not None:
                     # 最大値閾値あり
-                    if val < max_num:
+                    if val <= max_num:
                         retBool = True
                     else:
                         retBool = False

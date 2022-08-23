@@ -102,7 +102,7 @@ class FloatColumn(Column):
                     vlen = int(len(srt_val))
                     if "." in srt_val or "-" in srt_val:
                         vlen -= 1
-                        if max_digit < vlen:
+                        if max_digit <= vlen:
                             retBool = False
                             msg = "上限桁数を超えています。({}<{})[{}]".format(max_digit, vlen, self.rest_key_name)
                             return retBool, msg
@@ -112,7 +112,7 @@ class FloatColumn(Column):
                 retBool = True
             elif min_num is not None and max_num is not None:
                 # 最小値、最大値閾値あり
-                if min_num < val < max_num:
+                if min_num <= val <= max_num:
                     retBool = True
                 else:
                     # retBool = False
@@ -121,7 +121,7 @@ class FloatColumn(Column):
 
             elif min_num is not None:
                 # 最小値閾値あり
-                if min_num < val:
+                if min_num <= val:
                     retBool = True
                 else:
                     retBool = False
@@ -129,7 +129,7 @@ class FloatColumn(Column):
                     return retBool, msg
             elif max_num is not None:
                 # 最大値閾値あり
-                if val < max_num:
+                if val <= max_num:
                     retBool = True
                 else:
                     retBool = False

@@ -4,51 +4,33 @@ from common_libs.conductor.classes.util import ConductorCommonLibs
 
 from flask import g
 
-def external_valid_before(objdbca, objtable, option):
-    # print('xxxxx-1001')
-    # print('external_valid_before')
+
+def conductor_class_validate(objdbca, objtable, option):
+
     retBool = True
     msg = ''
-    #  pprint.pprint(option)
-    return retBool, msg, option,
+    try:
+        # 動確試験用（1系項目削除、変換処理　暫定対応）
+        option = convert_conductor_ver_1(option)
 
-def external_valid_after(objdbca, objtable, option):
-    # print('xxxxx-1001')
-    # print('external_valid_after')
-    retBool = True
-    msg = ''
-    #  pprint.pprint(option)
-    return retBool, msg, option,
-
-def external_valid_menu_before(objdbca, objtable, option):
-    # print('xxxxx-1001')
-    # print('external_valid_menu_before')
-    retBool = True
-    msg = ''
-    option = convert_conductor_ver_1(option)
-    # pprint.pprint(option)
-
-    target_rest_name = 'setting'
-    entry_parameter = option.get('entry_parameter')
-    tmp_parameter = entry_parameter.get('parameter')
-    conductor_data = json.loads(tmp_parameter.get(target_rest_name))
-    CCL = ConductorCommonLibs()
-    result = CCL.chk_format(conductor_data)
-    if result[0] is False:
-        status_code = '499-00201'
-        msg_args = ["{}".format(result)]
-        msg = g.appmsg.get_api_message(status_code, msg_args)
-        retBool = result[0]
+        target_rest_name = 'setting'
+        entry_parameter = option.get('entry_parameter')
+        tmp_parameter = entry_parameter.get('parameter')
+        conductor_data = json.loads(tmp_parameter.get(target_rest_name))
+        
+        cclibs = ConductorCommonLibs()
+        result = cclibs.chk_format_all(conductor_data)
+        # print(result)
+        if result[0] is False:
+            status_code = '499-00201'
+            msg_args = ["{}".format(result)]
+            msg = g.appmsg.get_api_message(status_code, msg_args)
+            retBool = result[0]
+    except Exception():
+        retBool = False
 
     return retBool, msg, option,
 
-def external_valid_menu_after(objdbca, objtable, option):
-    # print('xxxxx-1001')
-    # print('external_valid_menu_after')
-    retBool = True
-    msg = ''
-    #  pprint.pprint(option)
-    return retBool, msg, option,
 
 def convert_conductor_ver_1(option):
     target_rest_name = 'setting'
@@ -59,6 +41,7 @@ def convert_conductor_ver_1(option):
         tmp_setting = tmp_setting.replace("LUT4U", "last_update_date_time")
         tmp_setting = tmp_setting.replace("SKIP_FLAG", "skip_flag")
         tmp_setting = tmp_setting.replace("CALL_CONDUCTOR_ID", "call_conductor_id")
+        tmp_setting = tmp_setting.replace("CONDUCTOR_NAME", "call_conductor_name")
         tmp_setting = tmp_setting.replace("OPERATION_NO_IDBH", "operation_id")
         tmp_setting = tmp_setting.replace("PATTERN_ID", "movement_id")
         tmp_setting = tmp_setting.replace("OPERATION_NO_IDBH", "operation_id")
@@ -66,11 +49,32 @@ def convert_conductor_ver_1(option):
         tmp_setting = tmp_setting.replace("CONDUCTOR_NAME", "Name")
         tmp_setting = tmp_setting.replace("OPERATION_NAME", "operation_name")
         tmp_setting = tmp_setting.replace("END_TYPE", "end_type")
+        # tmp_setting = tmp_setting.replace("egde", "edge")
+        
         json_setting = json.loads(tmp_setting)
+        if 'id' in json_setting['conductor']:
+            json_setting['conductor']['id'] = None
         if 'ACCESS_AUTH' in json_setting['conductor']:
             del json_setting['conductor']['ACCESS_AUTH']
         if 'NOTICE_INFO' in json_setting['conductor']:
             del json_setting['conductor']['NOTICE_INFO']
+        for ckey in json_setting.keys():
+            carr = json_setting.get(ckey)
+            n_type = carr.get('type')
+            n_name_val = carr.get('Name')
+            if n_type == 'movement':
+                del json_setting[ckey]['Name']
+                json_setting[ckey]['movement_name'] = n_name_val
+            if n_type == 'end':
+                end_type = json_setting[ckey]['end_type']
+                if end_type is None:
+                    json_setting[ckey]['end_type'] = "6"
+                elif end_type == "5":
+                    json_setting[ckey]['end_type'] = "6"
+                elif end_type == "11":
+                    json_setting[ckey]['end_type'] = "8"
+                elif end_type == "7":
+                    json_setting[ckey]['end_type'] = "7"
         tmp_setting = json.dumps(json_setting, ensure_ascii=False)
     option['entry_parameter']['parameter']['setting'] = tmp_setting
     # pprint.pprint(option)

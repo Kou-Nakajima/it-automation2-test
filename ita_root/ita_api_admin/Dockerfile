@@ -41,6 +41,7 @@ RUN dnf install -y \
     markdown \
     pymysql \
     python-dotenv \
+    chardet \
 &&  pip3.9 install \
     connexion[swagger-ui] \
 &&  groupadd $GROUPNAME \

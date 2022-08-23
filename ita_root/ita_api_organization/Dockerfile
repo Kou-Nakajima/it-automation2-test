@@ -42,6 +42,7 @@ RUN dnf install -y \
     pymysql \
     python-dotenv \
     openpyxl \
+    chardet \
 &&  pip3.9 install \
     connexion[swagger-ui] \
 &&  groupadd $GROUPNAME \

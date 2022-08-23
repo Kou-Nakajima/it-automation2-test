@@ -320,25 +320,7 @@ CREATE TABLE T_ANSR_ROLE_NAME
 
 
 
--- 20402 Role ロール変数管理
-CREATE TABLE T_ANSR_ROLE_VAR
-(
-    VARS_NAME_ID                    VARCHAR(40),                                -- 項番
-    ROLE_PACKAGE_ID                 VARCHAR(40),                                -- ロールパッケージ名
-    ROLE_ID                         VARCHAR(40),                                -- ロール名
-    VARS_NAME                       VARCHAR(255),                               -- 変数名
-    VARS_ATTRIBUTE_01               VARCHAR(2),                                 -- 変数タイプ
-    NOTE                            TEXT,                                       -- 備考
-    DISUSE_FLAG                     VARCHAR(1),                                 -- 廃止フラグ
-    LAST_UPDATE_TIMESTAMP           DATETIME(6),                                -- 最終更新日時
-    LAST_UPDATE_USER                VARCHAR(40),                                -- 最終更新者
-    PRIMARY KEY(VARS_NAME_ID)
-)ENGINE = InnoDB, CHARSET = utf8mb4, COLLATE = utf8mb4_bin, ROW_FORMAT=COMPRESSED ,KEY_BLOCK_SIZE=8;
-
-
-
-
--- 20403 Role Movemnet一覧
+-- 20402 Role Movemnet一覧
 CREATE VIEW V_ANSR_MOVEMENT AS
 SELECT 
 MOVEMENT_ID,
@@ -393,7 +375,7 @@ WHERE
 
 
 
--- 20404 Role ロールパッケージ管理
+-- 20403 Role ロールパッケージ管理
 CREATE TABLE T_ANSR_MATL_COLL
 (
     ROLE_PACKAGE_ID                 VARCHAR(40),                                -- 項番
@@ -425,7 +407,7 @@ CREATE TABLE T_ANSR_MATL_COLL_JNL
 
 
 
--- 20405 Role Movement-ロール紐付
+-- 20404 Role Movement-ロール紐付
 CREATE TABLE T_ANSR_MVMT_MATL_LINK
 (
     MVMT_MATL_LINK_ID               VARCHAR(40),                                -- 項番
@@ -459,12 +441,12 @@ CREATE TABLE T_ANSR_MVMT_MATL_LINK_JNL
 
 
 
--- 20406 Role Movement-変数紐付
+-- 20405 Role Movement-変数紐付
 CREATE TABLE T_ANSR_MVMT_VAR_LINK
 (
     MVMT_VAR_LINK_ID                VARCHAR(40),                                -- 項番
     MOVEMENT_ID                     VARCHAR(40),                                -- Movement
-    VARS_NAME_ID                    VARCHAR(40),                                -- 変数名
+    VARS_NAME                       VARCHAR(255),                               -- 変数名
     VARS_ATTRIBUTE_01               VARCHAR(2),                                 -- 変数タイプ
     NOTE                            TEXT,                                       -- 備考
     DISUSE_FLAG                     VARCHAR(1),                                 -- 廃止フラグ
@@ -476,11 +458,10 @@ CREATE TABLE T_ANSR_MVMT_VAR_LINK
 
 
 
--- 20407 Role 変数ネスト管理
+-- 20406 Role 変数ネスト管理
 CREATE TABLE T_ANSR_NESTVAR_MEMBER_MAX_COL
 (
     MAX_COL_SEQ_ID                  VARCHAR(40),                                -- 項番
-    MOVEMENT_ID                     VARCHAR(40),                                -- Movement ID
     MVMT_VAR_LINK_ID                VARCHAR(40),                                -- 変数名
     ARRAY_MEMBER_ID                 VARCHAR(40),                                -- メンバー変数名（繰返し有）
     MAX_COL_SEQ                     INT,                                        -- 最大繰返数
@@ -497,7 +478,6 @@ CREATE TABLE T_ANSR_NESTVAR_MEMBER_MAX_COL_JNL
     JOURNAL_REG_DATETIME            DATETIME(6),                                -- 履歴用変更日時
     JOURNAL_ACTION_CLASS            VARCHAR (8),                                -- 履歴用変更種別
     MAX_COL_SEQ_ID                  VARCHAR(40),                                -- 項番
-    MOVEMENT_ID                     VARCHAR(40),                                -- Movement ID
     MVMT_VAR_LINK_ID                VARCHAR(40),                                -- 変数名
     ARRAY_MEMBER_ID                 VARCHAR(40),                                -- メンバー変数名（繰返し有）
     MAX_COL_SEQ                     INT,                                        -- 最大繰返数
@@ -510,7 +490,7 @@ CREATE TABLE T_ANSR_NESTVAR_MEMBER_MAX_COL_JNL
 
 
 
--- 20408 Role 代入値自動登録
+-- 20407 Role 代入値自動登録
 CREATE TABLE T_ANSR_VALUE_AUTOREG
 (
     COLUMN_ID                       VARCHAR(40),                                -- 項番
@@ -519,10 +499,10 @@ CREATE TABLE T_ANSR_VALUE_AUTOREG
     COLUMN_ASSIGN_SEQ               INT,                                        -- 代入順序
     COL_TYPE                        VARCHAR(2),                                 -- 登録方式
     MOVEMENT_ID                     VARCHAR(40),                                -- Movement
-    VAL_VARS_LINK_ID                VARCHAR(40),                                -- 変数名
+    VAL_MVMT_VAR_LINK_ID            VARCHAR(40),                                -- 変数名
     VAL_COL_SEQ_COMBINATION_ID      VARCHAR(40),                                -- メンバー変数
     VAL_ASSIGN_SEQ                  INT,                                        -- 代入順序
-    KEY_VARS_LINK_ID                VARCHAR(40),                                -- 変数名
+    KEY_MVMT_VAR_LINK_ID            VARCHAR(40),                                -- 変数名
     KEY_COL_SEQ_COMBINATION_ID      VARCHAR(40),                                -- メンバー変数
     KEY_ASSIGN_SEQ                  INT,                                        -- 代入順序
     NULL_DATA_HANDLING_FLG          VARCHAR(2),                                 -- NULL連携
@@ -544,10 +524,10 @@ CREATE TABLE T_ANSR_VALUE_AUTOREG_JNL
     COLUMN_ASSIGN_SEQ               INT,                                        -- 代入順序
     COL_TYPE                        VARCHAR(2),                                 -- 登録方式
     MOVEMENT_ID                     VARCHAR(40),                                -- Movement
-    VAL_VARS_LINK_ID                VARCHAR(40),                                -- 変数名
+    VAL_MVMT_VAR_LINK_ID            VARCHAR(40),                                -- 変数名
     VAL_COL_SEQ_COMBINATION_ID      VARCHAR(40),                                -- メンバー変数
     VAL_ASSIGN_SEQ                  INT,                                        -- 代入順序
-    KEY_VARS_LINK_ID                VARCHAR(40),                                -- 変数名
+    KEY_MVMT_VAR_LINK_ID            VARCHAR(40),                                -- 変数名
     KEY_COL_SEQ_COMBINATION_ID      VARCHAR(40),                                -- メンバー変数
     KEY_ASSIGN_SEQ                  INT,                                        -- 代入順序
     NULL_DATA_HANDLING_FLG          VARCHAR(2),                                 -- NULL連携
@@ -560,7 +540,7 @@ CREATE TABLE T_ANSR_VALUE_AUTOREG_JNL
 
 
 
--- 20409 Role 作業対象ホスト
+-- 20408 Role 作業対象ホスト
 CREATE TABLE T_ANSR_TGT_HOST
 (
     PHO_LINK_ID                     VARCHAR(40),                                -- 項番
@@ -578,7 +558,7 @@ CREATE TABLE T_ANSR_TGT_HOST
 
 
 
--- 20410 Role 代入値管理
+-- 20409 Role 代入値管理
 CREATE TABLE T_ANSR_VALUE
 (
     ASSIGN_ID                       VARCHAR(40),                                -- 項番
@@ -603,7 +583,7 @@ CREATE TABLE T_ANSR_VALUE
 
 
 
--- 20413 Role 作業管理
+-- 20412 Role 作業管理
 CREATE TABLE T_ANSR_EXEC_STS_INST
 (
     EXECUTION_NO                    VARCHAR(40),                                -- 作業番号
@@ -693,11 +673,10 @@ CREATE TABLE T_ANSR_EXEC_STS_INST_JNL
 
 
 
--- 20414 Role 多段変数メンバー管理
+-- 20413 Role 多段変数メンバー管理
 CREATE TABLE T_ANSR_NESTVAR_MEMBER
 (
     ARRAY_MEMBER_ID                 VARCHAR(40),                                -- 項番
-    MOVEMENT_ID                     VARCHAR(40),                                -- Movement ID
     MVMT_VAR_LINK_ID                VARCHAR(40),                                -- 親変数名
     PARENT_VARS_KEY_ID              INT,                                        -- 親メンバー変数へのキー
     VARS_KEY_ID                     INT,                                        -- 自メンバー変数のキー
@@ -719,11 +698,10 @@ CREATE TABLE T_ANSR_NESTVAR_MEMBER
 
 
 
--- 20415 Role 多段変数配列組合せ管理
+-- 20414 Role 多段変数配列組合せ管理
 CREATE TABLE T_ANSR_NESTVAR_MEMBER_COL_COMB
 (
     COL_SEQ_COMBINATION_ID          VARCHAR(40),                                -- 項番
-    MOVEMENT_ID                     VARCHAR(40),                                -- Movement ID
     MVMT_VAR_LINK_ID                VARCHAR(40),                                -- 変数名
     ARRAY_MEMBER_ID                 VARCHAR(40),                                -- 多段変数項番
     COL_COMBINATION_MEMBER_ALIAS    TEXT,                                       -- プルダウン表示メンバー変数
@@ -1225,7 +1203,7 @@ CREATE VIEW V_ANSR_NESTVAR_MOVEMENT AS
 SELECT 
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
+TAB_A.VARS_NAME,
 TAB_A.VARS_ATTRIBUTE_01,
 TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
@@ -1238,34 +1216,10 @@ TAB_A.DISUSE_FLAG = 0;
 
 
 
--- V006_変数ネスト管理＿変数名ビュー
-CREATE VIEW V_ANSR_NESTVAR_VARS_NAME AS
-SELECT
-TAB_A.MVMT_VAR_LINK_ID,
-TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
-TAB_A.VARS_ATTRIBUTE_01,
-TAB_A.NOTE,
-TAB_A.DISUSE_FLAG,
-TAB_A.LAST_UPDATE_TIMESTAMP,
-TAB_A.LAST_UPDATE_USER,
-TAB_B.VARS_NAME
-FROM
-T_ANSR_MVMT_VAR_LINK TAB_A
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_B ON (TAB_A.VARS_NAME_ID = TAB_B.VARS_NAME_ID)
-WHERE 
-TAB_A.DISUSE_FLAG = 0
-AND
-TAB_B.DISUSE_FLAG = 0;
-
-
-
--- V007_変数ネスト管理_メンバー変数名(繰返し有)ビュー
+-- V006_変数ネスト管理_メンバー変数名(繰返し有)ビュー
 CREATE VIEW V_ANSR_ARRAY_MEMBER AS
 SELECT
 TAB_A.ARRAY_MEMBER_ID,
-TAB_A.MOVEMENT_ID,
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.PARENT_VARS_KEY_ID,
 TAB_A.VARS_KEY_ID,
@@ -1288,7 +1242,7 @@ TAB_A.DISUSE_FLAG = 0;
 
 
 
--- V008_代入値自動登録_メニュー名ビュー
+-- V007_代入値自動登録_メニュー名ビュー
 CREATE VIEW V_ANSC_MENU AS 
 SELECT
 TAB_A.COLUMN_DEFINITION_ID,
@@ -1407,61 +1361,52 @@ TAB_C.DISUSE_FLAG = 0;
 
 
 
--- V009_代入値自動登録_Movement名_変数名ビュー
+-- V008_代入値自動登録_Movement名_変数名ビュー
 CREATE VIEW V_ANSR_VAL_VARS_LINK AS
 SELECT
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
+TAB_A.VARS_NAME,
 TAB_A.VARS_ATTRIBUTE_01,
 TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
 TAB_A.LAST_UPDATE_TIMESTAMP,
 TAB_A.LAST_UPDATE_USER,
-CONCAT(TAB_B.MOVEMENT_NAME, ":", TAB_C.VARS_NAME) AS MOVEMENT_VARS_NAME
+CONCAT(TAB_B.MOVEMENT_NAME, ":", TAB_A.VARS_NAME) AS MOVEMENT_VARS_NAME
 FROM
 T_ANSR_MVMT_VAR_LINK TAB_A
 LEFT JOIN
 V_ANSR_MOVEMENT TAB_B ON (TAB_A.MOVEMENT_ID = TAB_B.MOVEMENT_ID)
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_C ON (TAB_A.VARS_NAME_ID = TAB_C.VARS_NAME_ID)
 WHERE
 TAB_A.DISUSE_FLAG = 0
 AND
-TAB_B.DISUSE_FLAG = 0
-AND
-TAB_C.DISUSE_FLAG = 0;
+TAB_B.DISUSE_FLAG = 0;
 CREATE VIEW V_ANSR_VAL_VARS_LINK_JNL AS
 SELECT
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
+TAB_A.VARS_NAME,
 TAB_A.VARS_ATTRIBUTE_01,
 TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
 TAB_A.LAST_UPDATE_TIMESTAMP,
 TAB_A.LAST_UPDATE_USER,
-CONCAT(TAB_B.MOVEMENT_NAME, ":", TAB_C.VARS_NAME) AS MOVEMENT_VARS_NAME
+CONCAT(TAB_B.MOVEMENT_NAME, ":", TAB_A.VARS_NAME) AS MOVEMENT_VARS_NAME
 FROM
 T_ANSR_MVMT_VAR_LINK TAB_A
 LEFT JOIN
 V_ANSR_MOVEMENT_JNL TAB_B ON (TAB_A.MOVEMENT_ID = TAB_B.MOVEMENT_ID)
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_C ON (TAB_A.VARS_NAME_ID = TAB_C.VARS_NAME_ID)
 WHERE
 TAB_A.DISUSE_FLAG = 0
 AND
-TAB_B.DISUSE_FLAG = 0
-AND
-TAB_C.DISUSE_FLAG = 0;
+TAB_B.DISUSE_FLAG = 0;
 
 
 
--- V010_代入値自動登録_Movement名_変数名_メンバー
+-- V009_代入値自動登録_Movement名_変数名_メンバー
 CREATE VIEW V_ANSR_VAL_COL_SEQ_COMBINATION AS
 SELECT
 TAB_A.COL_SEQ_COMBINATION_ID,
-TAB_A.MOVEMENT_ID,
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.ARRAY_MEMBER_ID,
 TAB_A.COL_COMBINATION_MEMBER_ALIAS,
@@ -1469,13 +1414,11 @@ TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
 TAB_A.LAST_UPDATE_TIMESTAMP,
 TAB_A.LAST_UPDATE_USER,
-CONCAT(TAB_D.MOVEMENT_NAME, ":", CONCAT(TAB_C.VARS_NAME, ":", TAB_A.COL_COMBINATION_MEMBER_ALIAS)) AS MOVEMENT_VARS_COL_COMBINATION_MEMBER
+CONCAT(TAB_D.MOVEMENT_NAME, ":", CONCAT(TAB_B.VARS_NAME, ":", TAB_A.COL_COMBINATION_MEMBER_ALIAS)) AS MOVEMENT_VARS_COL_COMBINATION_MEMBER
 FROM
 T_ANSR_NESTVAR_MEMBER_COL_COMB TAB_A
 LEFT JOIN
 T_ANSR_MVMT_VAR_LINK TAB_B ON (TAB_A.MVMT_VAR_LINK_ID = TAB_B.MVMT_VAR_LINK_ID)
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_C ON (TAB_B.VARS_NAME_ID = TAB_C.VARS_NAME_ID)
 LEFT JOIN
 V_ANSR_MOVEMENT TAB_D ON (TAB_B.MOVEMENT_ID = TAB_D.MOVEMENT_ID)
 WHERE
@@ -1483,13 +1426,10 @@ TAB_A.DISUSE_FLAG = 0
 AND
 TAB_B.DISUSE_FLAG = 0
 AND
-TAB_C.DISUSE_FLAG = 0
-AND
 TAB_D.DISUSE_FLAG = 0;
 CREATE VIEW V_ANSR_VAL_COL_SEQ_COMBINATION_JNL AS
 SELECT
 TAB_A.COL_SEQ_COMBINATION_ID,
-TAB_A.MOVEMENT_ID,
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.ARRAY_MEMBER_ID,
 TAB_A.COL_COMBINATION_MEMBER_ALIAS,
@@ -1497,13 +1437,11 @@ TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
 TAB_A.LAST_UPDATE_TIMESTAMP,
 TAB_A.LAST_UPDATE_USER,
-CONCAT(TAB_D.MOVEMENT_NAME, ":", CONCAT(TAB_C.VARS_NAME, ":", TAB_A.COL_COMBINATION_MEMBER_ALIAS)) AS MOVEMENT_VARS_COL_COMBINATION_MEMBER
+CONCAT(TAB_D.MOVEMENT_NAME, ":", CONCAT(TAB_B.VARS_NAME, ":", TAB_A.COL_COMBINATION_MEMBER_ALIAS)) AS MOVEMENT_VARS_COL_COMBINATION_MEMBER
 FROM
 T_ANSR_NESTVAR_MEMBER_COL_COMB TAB_A
 LEFT JOIN
 T_ANSR_MVMT_VAR_LINK TAB_B ON (TAB_A.MVMT_VAR_LINK_ID = TAB_B.MVMT_VAR_LINK_ID)
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_C ON (TAB_B.VARS_NAME_ID = TAB_C.VARS_NAME_ID)
 LEFT JOIN
 V_ANSR_MOVEMENT_JNL TAB_D ON (TAB_B.MOVEMENT_ID = TAB_D.MOVEMENT_ID)
 WHERE
@@ -1511,114 +1449,52 @@ TAB_A.DISUSE_FLAG = 0
 AND
 TAB_B.DISUSE_FLAG = 0
 AND
-TAB_C.DISUSE_FLAG = 0
-AND
 TAB_D.DISUSE_FLAG = 0;
 
 
 
--- V011_代入値管理 変数名ビュー
-CREATE VIEW V_ANSR_MVMT_VAR_LINK AS
-SELECT
-TAB_A.MVMT_VAR_LINK_ID,
-TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
-TAB_A.VARS_ATTRIBUTE_01,
-TAB_A.NOTE,
-TAB_A.DISUSE_FLAG,
-TAB_A.LAST_UPDATE_TIMESTAMP,
-TAB_A.LAST_UPDATE_USER,
-TAB_B.VARS_NAME
-FROM
-T_ANSR_MVMT_VAR_LINK TAB_A
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_B ON (TAB_A.VARS_NAME_ID = TAB_B.VARS_NAME_ID)
-WHERE
-TAB_A.DISUSE_FLAG = 0;
-
-
-
--- V012_代入値管理_メンバー変数名ビュー
+-- V010_代入値管理_メンバー変数名ビュー
 CREATE VIEW V_ANSR_COL_SEQ_COMBINATION AS
 SELECT
 TAB_A.COL_SEQ_COMBINATION_ID,
-TAB_A.MOVEMENT_ID,
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.ARRAY_MEMBER_ID,
 TAB_A.COL_COMBINATION_MEMBER_ALIAS,
 TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
 TAB_A.LAST_UPDATE_TIMESTAMP,
-TAB_A.LAST_UPDATE_USER,
-TAB_C.VARS_NAME
+TAB_A.LAST_UPDATE_USER
 FROM
 T_ANSR_NESTVAR_MEMBER_COL_COMB TAB_A
-LEFT JOIN
-T_ANSR_MVMT_VAR_LINK TAB_B ON (TAB_A.MVMT_VAR_LINK_ID = TAB_B.MVMT_VAR_LINK_ID)
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_C ON (TAB_B.VARS_NAME_ID = TAB_C.VARS_NAME_ID)
 WHERE
-TAB_A.DISUSE_FLAG = 0
-AND
-TAB_B.DISUSE_FLAG = 0;
+TAB_A.DISUSE_FLAG = 0;
 
 
 
--- V013_多段変数メンバー管理_親変数名ビュー
+-- V011_多段変数メンバー管理_親変数名ビュー
 CREATE VIEW V_ANSR_PARENT_VARIABLE_NAME AS
 SELECT
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
+TAB_A.VARS_NAME,
 TAB_A.VARS_ATTRIBUTE_01,
 TAB_A.NOTE,
 TAB_A.DISUSE_FLAG,
 TAB_A.LAST_UPDATE_TIMESTAMP,
-TAB_A.LAST_UPDATE_USER,
-TAB_B.VARS_NAME
+TAB_A.LAST_UPDATE_USER
 FROM
 T_ANSR_MVMT_VAR_LINK TAB_A
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_B ON(TAB_A.VARS_NAME_ID = TAB_B.VARS_NAME_ID)
 WHERE
 TAB_A.DISUSE_FLAG = 0
 AND
-TAB_B.VARS_ATTRIBUTE_01 = 3
-AND
-TAB_B.DISUSE_FLAG = 0;
+TAB_A.VARS_ATTRIBUTE_01 = 3;
 
 
 
--- V014_多段変数配列組合せ管理_変数名ビュー
-CREATE VIEW V_ANSR_NESTVAR_MEMBER_VARIABLE_NAME AS
-SELECT
-TAB_A.MVMT_VAR_LINK_ID,
-TAB_A.MOVEMENT_ID,
-TAB_A.VARS_NAME_ID,
-TAB_A.VARS_ATTRIBUTE_01,
-TAB_A.NOTE,
-TAB_A.DISUSE_FLAG,
-TAB_A.LAST_UPDATE_TIMESTAMP,
-TAB_A.LAST_UPDATE_USER,
-TAB_B.VARS_NAME
-FROM
-T_ANSR_MVMT_VAR_LINK TAB_A
-LEFT JOIN
-T_ANSR_ROLE_VAR TAB_B ON (TAB_A.VARS_NAME_ID =TAB_B.VARS_NAME_ID)
-WHERE
-TAB_A.VARS_ATTRIBUTE_01 = 3
-AND
-TAB_A.DISUSE_FLAG = 0
-AND
-TAB_B.DISUSE_FLAG = 0;
-
-
-
--- V015_多段変数配列組合せ管理_多段変数項番ビュー
+-- V012_多段変数配列組合せ管理_多段変数項番ビュー
 CREATE VIEW V_ANSR_NESTVAR_MEMBER_ARRAY_MEMBER AS
 SELECT
 TAB_A.ARRAY_MEMBER_ID,
-TAB_A.MOVEMENT_ID,
 TAB_A.MVMT_VAR_LINK_ID,
 TAB_A.PARENT_VARS_KEY_ID,
 TAB_A.VARS_KEY_ID,
@@ -1640,6 +1516,83 @@ WHERE
 TAB_A.VARS_NAME !=0
 AND
 TAB_A.DISUSE_FLAG = 0;
+
+
+
+-- V013_多段変数メンバー管理_Movementビュー
+CREATE VIEW V_ANSR_NESTVAR_MEMBER_MENU AS
+SELECT
+TAB_A.ARRAY_MEMBER_ID,
+TAB_A.MVMT_VAR_LINK_ID,
+TAB_A.PARENT_VARS_KEY_ID,
+TAB_A.VARS_KEY_ID,
+TAB_A.VARS_NAME,
+TAB_A.ARRAY_NEST_LEVEL,
+TAB_A.ASSIGN_SEQ_NEED,
+TAB_A.COL_SEQ_NEED,
+TAB_A.MEMBER_DISP,
+TAB_A.MAX_COL_SEQ,
+TAB_A.VRAS_NAME_PATH,
+TAB_A.VRAS_NAME_ALIAS,
+TAB_A.NOTE,
+TAB_A.DISUSE_FLAG,
+TAB_A.LAST_UPDATE_TIMESTAMP,
+TAB_A.LAST_UPDATE_USER,
+TAB_B.MOVEMENT_ID
+FROM
+T_ANSR_NESTVAR_MEMBER TAB_A
+LEFT JOIN
+T_ANSR_MVMT_VAR_LINK TAB_B ON (TAB_A.MVMT_VAR_LINK_ID = TAB_B.MVMT_VAR_LINK_ID)
+WHERE
+TAB_A.DISUSE_FLAG = 0
+AND
+TAB_B.DISUSE_FLAG = 0;
+
+
+
+-- V014_多段変数配列組合せ管理_Movementビュー
+CREATE VIEW V_ANSR_NESTVAR_MEMBER_COL_COMB_MENU AS
+SELECT
+TAB_A.COL_SEQ_COMBINATION_ID,
+TAB_A.MVMT_VAR_LINK_ID,
+TAB_A.ARRAY_MEMBER_ID,
+TAB_A.COL_COMBINATION_MEMBER_ALIAS,
+TAB_A.NOTE,
+TAB_A.DISUSE_FLAG,
+TAB_A.LAST_UPDATE_TIMESTAMP,
+TAB_A.LAST_UPDATE_USER,
+TAB_B.MOVEMENT_ID
+FROM
+T_ANSR_NESTVAR_MEMBER_COL_COMB TAB_A
+LEFT JOIN
+T_ANSR_MVMT_VAR_LINK TAB_B ON (TAB_A.MVMT_VAR_LINK_ID = TAB_B.MVMT_VAR_LINK_ID)
+WHERE
+TAB_A.DISUSE_FLAG = 0
+AND
+TAB_B.DISUSE_FLAG = 0;
+
+
+
+-- V015_変数ネスト管理_Movementビュー
+CREATE VIEW V_ANSR_NESTVAR_MEMBER_MAX_COL_MENU AS
+SELECT
+TAB_A.MAX_COL_SEQ_ID,
+TAB_A.MVMT_VAR_LINK_ID,
+TAB_A.ARRAY_MEMBER_ID,
+TAB_A.MAX_COL_SEQ,
+TAB_A.NOTE,
+TAB_A.DISUSE_FLAG,
+TAB_A.LAST_UPDATE_TIMESTAMP,
+TAB_A.LAST_UPDATE_USER,
+TAB_B.MOVEMENT_ID
+FROM
+T_ANSR_NESTVAR_MEMBER_MAX_COL TAB_A
+LEFT JOIN
+T_ANSR_MVMT_VAR_LINK TAB_B ON (TAB_A.MVMT_VAR_LINK_ID = TAB_B.MVMT_VAR_LINK_ID)
+WHERE
+TAB_A.DISUSE_FLAG = 0
+AND
+TAB_B.DISUSE_FLAG = 0;
 
 
 

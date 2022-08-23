@@ -870,6 +870,13 @@ class loadTable():
                                 if search_mode in search_mode_list:
                                     if search_key in self.get_restkey_list():
                                         objcolumn = self.get_columnclass(search_key)
+                                        # search_modeのチェック
+                                        if search_mode == 'RANGE' and objcolumn not in ['LastUpdateDateColumn', 'NumColumn', 'FloatColumn', 'DateTimeColumn', 'DateColumn']:
+                                            status_code = '499-00101'
+                                            log_msg_args = [search_key]
+                                            api_msg_args = [search_key]
+                                            raise AppException(status_code, log_msg_args, api_msg_args)
+
                                         filter_querys.append(objcolumn.get_filter_query(search_mode, search_conf))
 
                 #  全件
@@ -926,11 +933,11 @@ class loadTable():
                     where_str = textwrap.dedent("""
                         where `{col_name}` IN ( %s )
                         ORDER BY `JOURNAL_REG_DATETIME` DESC
-                    """).format(col_name=target_uuid_key).strip()
+                    """).format(col_name=primary_key).strip()
                 else:
                     where_str = textwrap.dedent("""
                         ORDER BY `JOURNAL_REG_DATETIME` DESC
-                    """).format(col_name=target_uuid_key).strip()
+                    """).format().strip()
 
                 sort_key = self.get_sort_key()
                 if sort_key is not None:
@@ -956,6 +963,8 @@ class loadTable():
                 tmp_result = self.objdbca.table_count(table_name, where_str, bind_value_list)
                 result_list = tmp_result
 
+        except AppException as e:
+            raise e
         except Exception:
             status_code = '999-99999'
             type_, value, traceback_ = sys.exc_info()

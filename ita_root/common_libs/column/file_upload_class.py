@@ -98,7 +98,7 @@ class FileUploadColumn(Column):
                 if max_length is not None:
                     check_val = len(str(val).encode('utf-8'))
                     if check_val != 0:
-                        if int(min_length) < check_val < int(max_length):
+                        if int(min_length) <= check_val <= int(max_length):
                             retBool = True
                         else:
                             retBool = False

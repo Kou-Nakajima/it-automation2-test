@@ -22,5 +22,6 @@ RUN dnf install -y httpd
 
 COPY ./ita_root/ita_web_server/contents/ /var/www/html/
 COPY ./ita_root/ita_web_server/config/httpd.conf/httpd.conf /etc/httpd/conf/httpd.conf
+COPY ./ita_root/ita_web_server/config/httpd.conf/rewrite.conf /etc/httpd/conf.d/rewrite.conf
 
 CMD ["httpd","-D","FOREGROUND"]

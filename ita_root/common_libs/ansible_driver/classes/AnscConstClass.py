@@ -85,19 +85,12 @@ class AnscConst:
     # 具体値 SENSITIVE設定値
     DF_SENSITIVE_OFF = "0"    # False
     DF_SENSITIVE_ON = "1"     # True
-    
-    # 機器一覧 認証方式(LOGIN_AUTH_TYPE)
-    DF_LOGIN_AUTH_TYPE_KEY = '1'         # 鍵認証(パスフレーズなし)
-    DF_LOGIN_AUTH_TYPE_PW = '2'          # パスワード認証
-    DF_LOGIN_AUTH_TYPE_KEY_EXCH = '3'    # 認証方式:鍵認証(鍵交換済み)
-    DF_LOGIN_AUTH_TYPE_KEY_PP_USE = '4'  # 認証方式:鍵認証(パスフレーズあり)
-    DF_LOGIN_AUTH_TYPE_PW_WINRM = '5'    # 認証方式:パスワード認証(winrm)
 
     # 正規表記でエスケープが必要な文字 $ ( ) * + - / ? ^ { | }
     # 親変数で許容する文字: xxx_[0-9a-zA-Z_]　  GBL/TPF
-    VAR_parent_VarName = "/^(\s*)[0-9a-zA-Z_]*(\s*)$/"      # 通常の変数
-    GBL_parent_VarName = "/^(\s*)GBL_[0-9a-zA-Z_]*(\s*)$/"  # グローバル変数
-    TPF_parent_VarName = "/^(\s*)TPF_[0-9a-zA-Z_]*(\s*)$/"  # テンプレート変数
+    VAR_parent_VarName = r"^\s*[0-9a-zA-Z_]*\s*$"      # 通常の変数
+    GBL_parent_VarName = r"^\s*GBL_[0-9a-zA-Z_]*\s*$"  # グローバル変数
+    TPF_parent_VarName = r"^\s*TPF_[0-9a-zA-Z_]*\s*$"  # テンプレート変数
     
     # 実行エンジン
     DF_EXEC_MODE_ANSIBLE = '1'    # Ansibleで実行
